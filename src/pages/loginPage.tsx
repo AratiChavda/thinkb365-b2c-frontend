@@ -9,7 +9,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { authAPI } from "@/lib/api";
 import { useDispatch } from "react-redux";
-import { setCredentials } from "@/store/slices/authSlice";
+import { setCredentials, setToken } from "@/store/slices/authSlice";
 
 export function Login() {
   const [email, setEmail] = useState("");
@@ -23,16 +23,16 @@ export function Login() {
     const { data } = await authAPI.login({ email, password });
 
     if (data) {
-      await dispatch(
+      dispatch(
         setCredentials({
           id: data.user?.id,
           email: data.user?.email,
           role: data.user?.role,
           name: data.user?.name,
-          access_token: data.access_token,
         })
       );
-      setTimeout(() => navigate("/dashboard"), 100);
+      dispatch(setToken(data.access_token));
+      navigate("/dashboard");
     }
   };
 

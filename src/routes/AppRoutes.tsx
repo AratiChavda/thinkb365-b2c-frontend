@@ -22,13 +22,12 @@ import HouseHoldLayout from "@/components/houseHold/layout";
 import PlansPage from "@/pages/plansPage";
 import ProductDetailPage from "@/pages/productDetailPage";
 import SuccessPage from "@/pages/successPage";
-// import { useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 export default function AppRoutes() {
-  // const isAuthenticated = useSelector((state: any) => state.auth?.accessToken);
-  // const userRole: any = useSelector((state: any) => state.auth?.role);
-  const isAuthenticated = localStorage.getItem("access_token");
-  const userRole: any = JSON.parse(localStorage.getItem("user") || "{}")?.role;
+  const isAuthenticated = useSelector((state: any) => state.auth?.accessToken);
+  const userRole: any = useSelector((state: any) => state.auth?.user?.role);
+  
   const RoleBasedLayout = () => {
     switch (userRole) {
       case "administrator":
@@ -42,7 +41,10 @@ export default function AppRoutes() {
 
   return (
     <Routes>
-      <Route path="/login" element={<Login />} />
+      <Route
+        path="/login"
+        element={!isAuthenticated ? <Login /> : <Navigate to="/dashboard" />}
+      />
       <Route element={<PublicLayout />}>
         <Route path="/" element={<LandingPage />} />
         <Route path="/plans" element={<PlansPage />} />
