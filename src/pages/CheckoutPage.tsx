@@ -35,6 +35,45 @@ const CheckoutPage = () => {
 
   const [paymentMethod, setPaymentMethod] = useState("credit");
   const [couponCode, setCouponCode] = useState("");
+  const [promoError, setPromoError] = useState("");
+  const [isApplyingPromo, setIsApplyingPromo] = useState(false);
+  const [discount, setDiscount] = useState(0);
+  const subtotal: any = order.subtotal.toFixed(2);
+  const total: any = subtotal - order.tax - discount;
+
+  const handleApplyPromoCode = async () => {
+    if (!couponCode) {
+      setPromoError("Please enter a promo code");
+      return;
+    }
+
+    setIsApplyingPromo(true);
+    setPromoError("");
+
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      const isValidPromo =
+        couponCode.toUpperCase() === "SAVE20" ||
+        couponCode.toUpperCase() === "FLASH50";
+      if (isValidPromo) {
+        const discountAmount =
+          couponCode.toUpperCase() === "FLASH50" ? subtotal * 0.5 : subtotal * 0.2;
+        setDiscount(discountAmount);
+      } else {
+        setPromoError("Invalid promo code");
+      }
+    } catch {
+      setPromoError("Failed to apply promo code");
+    } finally {
+      setIsApplyingPromo(false);
+    }
+  };
+  const handleRemovePromo = () => {
+    setCouponCode("");
+    setDiscount(0);
+    setPromoError("");
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
@@ -98,11 +137,18 @@ const CheckoutPage = () => {
                   </div>
                   <div className="flex justify-between mb-2">
                     <p className="text-gray-600">Tax</p>
-                    <p className="font-medium">${order.tax.toFixed(2)}</p>
+                    <p className="font-medium">- ${order.tax.toFixed(2)}</p>
                   </div>
+
+                  {discount > 0 && (
+                    <div className="flex justify-between mb-2 text-green-600">
+                      <p className="text-gray-600">Promo Discount</p>
+                      <p className="font-medium">- ${discount?.toFixed(2)}</p>
+                    </div>
+                  )}
                   <div className="flex justify-between text-lg font-bold mt-4">
                     <p>Total</p>
-                    <p>${order.total.toFixed(2)}</p>
+                    <p>${total.toFixed(2)}</p>
                   </div>
                 </div>
 
@@ -112,8 +158,27 @@ const CheckoutPage = () => {
                     value={couponCode}
                     onChange={(e) => setCouponCode(e.target.value)}
                   />
-                  <Button variant="outline">Apply</Button>
+                  {discount > 0 ? (
+                    <Button variant="outline" onClick={handleRemovePromo}>
+                      Remove
+                    </Button>
+                  ) : (
+                    <Button
+                      onClick={handleApplyPromoCode}
+                      disabled={isApplyingPromo}
+                    >
+                      {isApplyingPromo ? "Applying..." : "Apply"}
+                    </Button>
+                  )}
                 </div>
+                {promoError && (
+                  <p className="text-red-500 text-sm mt-1">{promoError}</p>
+                )}
+                {discount > 0 && (
+                  <p className="text-green-600 text-sm mt-1">
+                    Promo code applied! You saved ${discount.toFixed(2)}
+                  </p>
+                )}
               </div>
             </CardContent>
           </Card>
