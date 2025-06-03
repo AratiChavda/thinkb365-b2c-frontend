@@ -219,7 +219,7 @@ const SubscriptionForm = ({ products, offers, editingId, onCancel }: any) => {
   }
 
   return (
-    <Card className="w-full max-w-7xl mx-auto">
+    <Card className="w-full max-w-4xl mx-auto">
       <CardHeader>
         <CardTitle className="text-2xl font-bold">
           {editingId

@@ -67,7 +67,7 @@ export const Header = () => {
           onClick={() => navigate("/")}
         >
           <motion.div
-            whileHover={{ rotate: 15 }}
+            whileHover={{ scale: 1.05 }}
             transition={{ type: "spring", stiffness: 300 }}
           >
             <BookOpen className="h-6 w-6 text-primary-600 group-hover:text-primary-700 transition-colors" />
@@ -141,7 +141,7 @@ export const Header = () => {
             onClick={() => navigate("/")}
           >
             <motion.div
-              whileHover={{ rotate: 15 }}
+              whileHover={{ scale: 1.05 }}
               transition={{ type: "spring", stiffness: 300 }}
             >
               <img src="/public/News_Corp_logo.svg" className="h-8 mt-2 w-full" />
