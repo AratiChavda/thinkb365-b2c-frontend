@@ -19,7 +19,7 @@ const ProductPage = () => {
       setCategories(categoriesResponse.data);
     };
     fetchData();
-  });
+  }, []);
 
   const handleCancel = () => {
     setIsAdding(false);

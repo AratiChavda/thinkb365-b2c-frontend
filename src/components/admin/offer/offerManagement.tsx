@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { AnimatePresence, motion } from "framer-motion";
 import { offerAPI } from "@/lib/api";
 import { Icons } from "@/components/icons";
@@ -10,17 +9,27 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@radix-ui/react-dropdown-menu";
+} from "@/components/ui/dropdown-menu";
 import { discountAppliesTo, discountType } from "@/types/product";
+import DataTable from "@/components/table/dataTable";
+import { DataTablePagination } from "@/components/table/dataTablePagination";
+import { useTableData } from "@/hooks/useTableData";
+import GlobalFilter from "@/components/table/globalFilter";
+import { getFormattedDate } from "@/lib/utils";
 
 const OfferManagement = ({ setIsAdding, setEditingId }: any) => {
   const [viewMode, setViewMode] = useState<"table" | "grid">("table");
-  const [searchTerm, setSearchTerm] = useState("");
   const [offers, setOffers] = useState<any[]>([]);
-  const [sortConfig, setSortConfig] = useState({
-    key: "name",
-    direction: "asc" as "asc" | "desc",
-  });
+  const {
+    paginatedData,
+    page,
+    setPage,
+    pageCount,
+    sorting,
+    setSorting,
+    globalFilter,
+    setGlobalFilter,
+  } = useTableData({ data: offers, initialPageSize: 10 });
 
   useEffect(() => {
     fetchOffers();
@@ -39,49 +48,17 @@ const OfferManagement = ({ setIsAdding, setEditingId }: any) => {
     setEditingId(offer.id);
     setIsAdding(true);
   };
-
-  const sortData = (key: string) => {
-    setSortConfig({
-      key,
-      direction:
-        sortConfig.key === key && sortConfig.direction === "asc"
-          ? "desc"
-          : "asc",
-    });
-  };
-
-  const filteredOffers = offers
-    .filter(
-      (item) =>
-        item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.discount_value.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        discountType[item.discount_type as keyof typeof discountType]
-          .toLowerCase()
-          .includes(searchTerm.toLowerCase()) ||
-        discountAppliesTo[item.applies_to as keyof typeof discountAppliesTo]
-          .toLowerCase()
-          .includes(searchTerm.toLowerCase())
-    )
-    .sort((a, b) => {
-      const aValue = a[sortConfig.key];
-      const bValue = b[sortConfig.key];
-      if (aValue < bValue) return sortConfig.direction === "asc" ? -1 : 1;
-      if (aValue > bValue) return sortConfig.direction === "asc" ? 1 : -1;
-      return 0;
-    });
-
   return (
-    <div className="max-w-7xl mx-auto">
-      <div className="flex justify-between items-center mb-8">
+    <div className="w-full p-4">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
         >
-          <h1 className="text-3xl font-bold text-gray-800">
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-800">
             Offers Management
           </h1>
-          <p className="text-gray-500">
+          <p className="text-sm sm:text-base text-gray-500">
             Create and manage special offers for your subscriptions
           </p>
         </motion.div>
@@ -90,219 +67,150 @@ const OfferManagement = ({ setIsAdding, setEditingId }: any) => {
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="flex items-center gap-4"
+          className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 w-full sm:w-auto"
         >
-          <Button
-            variant="outline"
-            size="icon"
-            onClick={() => setViewMode(viewMode === "table" ? "grid" : "table")}
-          >
-            {viewMode === "table" ? <Icons.lGrid /> : <Icons.lList />}
-          </Button>
-          <Button
-            onClick={() => {
-              setIsAdding(true);
-              setEditingId(null);
-            }}
-          >
-            <Icons.plus className="mr-2 h-4 w-4" />
-            Add Offer
-          </Button>
+          <GlobalFilter
+            globalFilter={globalFilter}
+            setGlobalFilter={setGlobalFilter}
+          />
+          <div className="flex gap-2">
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={() =>
+                setViewMode(viewMode === "table" ? "grid" : "table")
+              }
+            >
+              {viewMode === "table" ? <Icons.lGrid /> : <Icons.lList />}
+            </Button>
+            <Button
+              onClick={() => {
+                setIsAdding(true);
+                setEditingId(null);
+              }}
+            >
+              <Icons.plus className="mr-2 h-4 w-4" />
+              Add Offer
+            </Button>
+          </div>
         </motion.div>
       </div>
 
-      <div className="mb-6 relative max-w-md">
-        <Input
-          placeholder="Search offer by name"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="pl-10 pr-4 py-3 rounded-full"
-        />
-        <Icons.search className="absolute left-3 top-3 text-gray-400 h-5 w-5" />
-        {searchTerm && (
-          <button
-            onClick={() => setSearchTerm("")}
-            className="absolute right-3 top-3"
-          >
-            <Icons.x className="h-5 w-5 text-gray-400" />
-          </button>
-        )}
-      </div>
-
-      {viewMode === "table" ? (
-        <Card>
-          <CardContent className="p-0">
-            {filteredOffers.length ? (
-              <div className="overflow-x-auto">
-                <table className="w-full divide-y divide-gray-200">
-                  <thead className="bg-gray-50">
-                    <tr>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                        <Button
-                          variant="ghost"
-                          onClick={() => sortData("name")}
-                        >
-                          Name
-                          <Icons.sortDesc
-                            className={`ml-2 h-4 w-4 ${
-                              sortConfig.key === "name" &&
-                              sortConfig.direction === "desc"
-                                ? "rotate-180"
-                                : ""
-                            }`}
-                          />
-                        </Button>
-                      </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                        Type
-                      </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                        Value
-                      </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                        Applies to
-                      </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                        Start Date
-                      </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                        End Date
-                      </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-                        Created At
-                      </th>
-                      <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">
-                        Actions
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="bg-white divide-y divide-gray-100">
-                    {filteredOffers.map((offer) => (
-                      <tr key={offer.id}>
-                        <td className="px-6 py-4 font-medium text-gray-900">
-                          {offer.name}
-                        </td>
-                        <td className="px-6 py-4 font-medium text-gray-900">
-                          {
-                            discountType[
-                              offer.discount_type as keyof typeof discountType
-                            ]
-                          }
-                        </td>
-                        <td className="px-6 py-4 font-medium text-gray-900">
-                          {offer.discount_value}
-                        </td>
-                        <td className="px-6 py-4 font-medium text-gray-900">
-                          {
-                            discountAppliesTo[
-                              offer.applies_to as keyof typeof discountAppliesTo
-                            ]
-                          }
-                        </td>
-                        <td className="px-6 py-4 text-gray-500">
-                          {new Date(offer.start_date).toLocaleDateString()}
-                        </td>
-                        <td className="px-6 py-4 text-gray-500">
-                          {offer.end_date
-                            ? new Date(offer.end_date).toLocaleDateString()
-                            : ""}
-                        </td>
-                        <td className="px-6 py-4 text-gray-500">
-                          {new Date(offer.created_at).toLocaleDateString()}
-                        </td>
-                        <td className="px-6 py-4 text-right">
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            onClick={() => startEdit(offer)}
-                          >
-                            <Icons.edit className="h-4 w-4" />
-                          </Button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            ) : (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.4 }}
-                className="col-span-full"
-              >
-                <Card className="rounded-xl border-0 shadow-sm">
-                  <CardContent className="p-8 text-center">
-                    <Icons.offer className="h-12 w-12 text-gray-300 mx-auto mb-4" />
-                    <h3 className="text-lg font-medium text-gray-900 mb-1">
-                      No offers found
-                    </h3>
-                    <p className="text-gray-500 mb-6">
-                      Try adjusting your search or create a new offer
-                    </p>
+      {paginatedData.length ? (
+        viewMode === "table" ? (
+          <DataTable
+            data={paginatedData}
+            columns={[
+              {
+                header: "Name",
+                accessorKey: "name",
+              },
+              {
+                header: "Type",
+                accessorKey: "discount_type",
+                cell: ({ row }: any) => {
+                  return (
+                    <span className="text-xs font-semibold px-2 py-1 rounded-full">
+                      {
+                        discountType[
+                          row.original
+                            .discount_type as keyof typeof discountType
+                        ]
+                      }
+                    </span>
+                  );
+                },
+              },
+              {
+                header: "Value",
+                accessorKey: "discount_value",
+              },
+              {
+                header: "Applies to",
+                accessorKey: "applies_to",
+                cell: ({ row }: any) => {
+                  return (
+                    <span className="text-xs font-semibold px-2 py-1 rounded-full">
+                      {
+                        discountAppliesTo[
+                          row.original
+                            .applies_to as keyof typeof discountAppliesTo
+                        ]
+                      }
+                    </span>
+                  );
+                },
+              },
+              {
+                header: "Start Date",
+                accessorKey: "start_date",
+                sortingFn: "datetime",
+                cell: ({ _, row }: any) => {
+                  return getFormattedDate(row.original.start_date);
+                },
+              },
+              {
+                header: "End Date",
+                accessorKey: "end_date",
+                sortingFn: "datetime",
+                cell: ({ _, row }: any) => {
+                  return getFormattedDate(row.original.end_date);
+                },
+              },
+              {
+                header: "Created At",
+                accessorKey: "created_at",
+                sortingFn: "datetime",
+                cell: ({ _, row }: any) => {
+                  return getFormattedDate(row.original.created_at);
+                },
+              },
+              {
+                header: "Actions",
+                accessorKey: "actions",
+                enableSorting: false,
+                cell: ({ row }: any) => (
+                  <div className="flex items-center space-x-2">
                     <Button
-                      onClick={() => {
-                        setIsAdding(true);
-                        setEditingId(null);
-                      }}
-                      className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 rounded-full shadow-md"
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => startEdit(row.original)}
                     >
-                      <Icons.plus className="h-4 w-4 mr-2" />
-                      Add Offer
+                      <Icons.edit className="h-4 w-4" />
                     </Button>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            )}
-          </CardContent>
-        </Card>
-      ) : (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.4 }}
-          className="grid gap-6 md:grid-cols-2 lg:grid-cols-3"
-        >
-          <AnimatePresence>
-            {filteredOffers.length > 0 ? (
-              filteredOffers.map((offer: any) => (
+                  </div>
+                ),
+              },
+            ]}
+            sorting={sorting}
+            onSortingChange={setSorting}
+          ></DataTable>
+        ) : (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.4 }}
+            className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
+          >
+            <AnimatePresence>
+              {paginatedData.map((item) => (
                 <motion.div
-                  key={offer.id}
+                  key={item.id}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.3 }}
                 >
-                  <Card className="hover:shadow-lg transition-shadow duration-300 rounded-xl border-0">
-                    <CardContent className="p-6">
-                      <div className="flex justify-between items-start mb-4">
-                        <div className="flex items-center space-x-4">
-                          <div>
-                            <h3 className="text-lg font-semibold">
-                              {offer.name}
-                            </h3>
-                            <p className="text-sm text-gray-600">
-                              {
-                                discountType[
-                                  offer.discount_type as keyof typeof discountType
-                                ]
-                              }
-                            </p>
-                          </div>
-                          <p className="text-sm text-gray-600 line-clamp-2 mb-2">
-                            {offer.description}
+                  <Card className="hover:shadow-xl transition-shadow duration-300 rounded-2xl border border-gray-200 bg-white">
+                    <CardContent className="p-4 space-y-3">
+                      <div className="flex justify-between items-start">
+                        <div>
+                          <h3 className="text-lg font-semibold text-gray-800">
+                            {item.name}
+                          </h3>
+                          <p className="text-sm text-gray-600">
+                            {item.description}
                           </p>
-                          <div className="flex items-center justify-between">
-                            <span
-                              className={`px-2 py-1 rounded-full text-xs ${
-                                offer.is_active
-                                  ? "bg-green-100 text-green-800"
-                                  : "bg-red-100 text-red-800"
-                              }`}
-                            >
-                              {offer.is_active ? "Active" : "Inactive"}
-                            </span>
-                          </div>
                         </div>
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
@@ -314,76 +222,102 @@ const OfferManagement = ({ setIsAdding, setEditingId }: any) => {
                               <Icons.moreVertical className="h-4 w-4" />
                             </Button>
                           </DropdownMenuTrigger>
-                          <DropdownMenuContent
-                            align="end"
-                            className="rounded-lg shadow-lg"
-                          >
+                          <DropdownMenuContent className="w-24 mt-2 shadow-xl rounded-xl border border-gray-100">
                             <DropdownMenuItem
-                              onClick={() => startEdit(offer)}
-                              className="focus:bg-indigo-50"
+                              onClick={() => startEdit(item)}
+                              className="gap-2 cursor-pointer"
                             >
                               <Icons.edit className="h-4 w-4 mr-2" />
-                              Edit
+                              <span>Edit</span>
                             </DropdownMenuItem>
                           </DropdownMenuContent>
                         </DropdownMenu>
                       </div>
-                      <div className="space-y-3">
-                        <div className="flex items-center text-xs text-gray-500">
-                          <svg
-                            className="h-4 w-4 mr-1"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
-                            />
-                          </svg>
-                          Created{" "}
-                          {new Date(offer.createdAt).toLocaleDateString()}
+
+                      <div className="flex flex-wrap gap-2 text-xs">
+                        <span className="bg-yellow-100 text-yellow-700 px-2 py-0.5 rounded-full font-semibold">
+                          {item.discount_type === "percentage"
+                            ? `${item.discount_value}% OFF`
+                            : `₹${item.discount_value} OFF`}
+                        </span>
+
+                        <span className="bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded-full font-medium capitalize">
+                          Applies to {item.applies_to}
+                        </span>
+
+                        <span
+                          className={`px-2 py-0.5 rounded-full font-medium ${
+                            item.is_active
+                              ? "bg-emerald-100 text-emerald-700"
+                              : "bg-red-100 text-red-700"
+                          }`}
+                        >
+                          {item.is_active ? "Active" : "Inactive"}
+                        </span>
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-4 text-sm text-gray-700">
+                        <div className="flex items-center gap-2">
+                          <Icons.playCircle className="h-4 w-4 text-gray-500" />
+                          <span>
+                            From:{" "}
+                            {new Date(item.start_date).toLocaleDateString()}
+                          </span>
                         </div>
+                        <div className="flex items-center gap-2">
+                          <Icons.stopCircle className="h-4 w-4 text-gray-500" />
+                          <span>
+                            To: {new Date(item.end_date).toLocaleDateString()}
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center text-xs text-gray-500">
+                        <Icons.calendar className="h-4 w-4 mr-1" />
+                        Created {getFormattedDate(item.created_at)}
                       </div>
                     </CardContent>
                   </Card>
                 </motion.div>
-              ))
-            ) : (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.4 }}
-                className="col-span-full"
+              ))}
+            </AnimatePresence>
+          </motion.div>
+        )
+      ) : (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.4 }}
+          className="col-span-full"
+        >
+          <Card className="rounded-xl border-0 shadow-md bg-[radial-gradient(circle_at_bottom_left,_var(--tw-gradient-stops))] from-primary-100/30 via-primary-50/30 to-primary-100/30">
+            <CardContent className="p-8 text-center">
+              <Icons.offer className="h-12 w-12 text-gray-300 mx-auto mb-4" />
+              <h3 className="text-lg font-medium text-gray-900 mb-1">
+                No offers found
+              </h3>
+              <p className="text-gray-500 mb-6">
+                Try adjusting your search or create a new offer
+              </p>
+              <Button
+                onClick={() => {
+                  setIsAdding(true);
+                  setEditingId(null);
+                }}
+                className="bg-gradient-to-r from-primary-600 to-primary-600 hover:from-primary-700 hover:to-primary-700 rounded-full shadow-md"
               >
-                <Card className="rounded-xl border-0 shadow-sm">
-                  <CardContent className="p-8 text-center">
-                    <Icons.offer className="h-12 w-12 text-gray-300 mx-auto mb-4" />
-                    <h3 className="text-lg font-medium text-gray-900 mb-1">
-                      No offers found
-                    </h3>
-                    <p className="text-gray-500 mb-6">
-                      Try adjusting your search or create a new offer
-                    </p>
-                    <Button
-                      onClick={() => {
-                        setIsAdding(true);
-                        setEditingId(null);
-                      }}
-                      className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 rounded-full shadow-md"
-                    >
-                      <Icons.plus className="h-4 w-4 mr-2" />
-                      Add Offer
-                    </Button>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            )}
-          </AnimatePresence>
+                <Icons.plus className="h-4 w-4 mr-2" />
+                Add Offer
+              </Button>
+            </CardContent>
+          </Card>
         </motion.div>
       )}
+      <DataTablePagination
+        currentPage={page}
+        pageCount={pageCount}
+        onPageChange={setPage}
+      />
     </div>
   );
 };

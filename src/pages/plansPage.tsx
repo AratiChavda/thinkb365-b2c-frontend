@@ -263,7 +263,7 @@ const PlansPage = () => {
                 <Card
                   className={`h-full flex flex-col transition-all border-2 ${
                     selectedBundle === plan.id
-                      ? "border-indigo-500 shadow-lg"
+                      ? "border-primary-500 shadow-lg"
                       : "border-transparent hover:border-gray-200"
                   } ${plan.is_featured ? "ring-2 ring-yellow-400" : ""}`}
                 >
@@ -320,8 +320,8 @@ const PlansPage = () => {
                       </div>
 
                       {plan.trial_period_days && plan.trial_period_days > 0 && (
-                        <div className="bg-blue-50 p-3 rounded-lg border border-blue-100">
-                          <p className="text-blue-800 font-medium">
+                        <div className="bg-primary-50 p-3 rounded-lg border border-primary-100">
+                          <p className="text-primary-800 font-medium">
                             {plan.trial_period_days}-day free trial
                           </p>
                         </div>
@@ -388,7 +388,7 @@ const PlansPage = () => {
                   <Card
                     className={`cursor-pointer transition-all h-full flex flex-col ${
                       selectedAddons.includes(addon.id)
-                        ? "ring-2 ring-indigo-500 bg-indigo-50"
+                        ? "ring-2 ring-primary-500 bg-primary-50"
                         : ""
                     }`}
                     onClick={() => {

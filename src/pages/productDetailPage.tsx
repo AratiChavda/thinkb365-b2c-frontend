@@ -187,7 +187,7 @@
 //                     whileHover={{ scale: 1.01 }}
 //                     className={`p-4 border rounded-lg cursor-pointer transition-all ${
 //                       selectedBundle === bundle.id
-//                         ? "border-indigo-500 bg-indigo-50"
+//                         ? "border-primary-500 bg-primary-50"
 //                         : "border-gray-200"
 //                     }`}
 //                     onClick={() => setSelectedBundle(bundle.id)}
@@ -203,7 +203,7 @@
 //                         <span
 //                           className={`h-4 w-4 rounded-full border ${
 //                             selectedBundle === bundle.id
-//                               ? "bg-indigo-600 border-indigo-600"
+//                               ? "bg-primary-600 border-primary-600"
 //                               : "border-gray-300"
 //                           }`}
 //                         ></span>
@@ -219,7 +219,7 @@
 //                           {bundle.features.map((feature, i) => (
 //                             <li key={i} className="flex items-center">
 //                               <svg
-//                                 className="h-4 w-4 text-indigo-500 mr-2"
+//                                 className="h-4 w-4 text-primary-500 mr-2"
 //                                 fill="none"
 //                                 viewBox="0 0 24 24"
 //                                 stroke="currentColor"
@@ -407,7 +407,7 @@ const ProductDetailPage = () => {
                   >
                     <Card
                       className={`h-full flex flex-col transition-all ${
-                        selectedOption === option.id ? "ring-2 ring-indigo-500" : ""
+                        selectedOption === option.id ? "ring-2 ring-primary-500" : ""
                       }`}
                     >
                       <CardHeader>
@@ -482,7 +482,7 @@ const ProductDetailPage = () => {
                   <ul className="space-y-4">
                     {publication.features.map((feature, i) => (
                       <li key={i} className="flex items-start">
-                        <div className="flex-shrink-0 h-5 w-5 text-indigo-500 mr-3 mt-0.5">
+                        <div className="flex-shrink-0 h-5 w-5 text-primary-500 mr-3 mt-0.5">
                           <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                           </svg>

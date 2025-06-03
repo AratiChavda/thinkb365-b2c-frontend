@@ -51,14 +51,14 @@ export const adminNavItems = [
     url: "/dashboard/users",
     icon: Icons.users,
   },
-  {
-    title: "Reports",
-    url: "/dashboard/reports",
-    icon: Icons.reports,
-  },
-  {
-    title: "Settings",
-    url: "/dashboard/settings",
-    icon: Icons.settings,
-  },
+  // {
+  //   title: "Reports",
+  //   url: "/dashboard/reports",
+  //   icon: Icons.reports,
+  // },
+  // {
+  //   title: "Settings",
+  //   url: "/dashboard/settings",
+  //   icon: Icons.settings,
+  // },
 ];

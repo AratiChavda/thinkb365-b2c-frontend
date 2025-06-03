@@ -24,8 +24,9 @@ export default {
           DEFAULT: "hsl(var(--popover))",
           foreground: "hsl(var(--popover-foreground))",
         },
-        indigo: {
-          DEFAULT: "#8E1530",
+        primary: {
+          DEFAULT: "hsl(var(--primary))",
+          foreground: "hsl(var(--primary-foreground))",
           50: "#F9E6EA",
           100: "#F3CED4",
           200: "#E6A1AB",
@@ -37,20 +38,9 @@ export default {
           800: "#510A1B",
           900: "#3C0714",
         },
-        blue: {
-          DEFAULT: "#8E1530",
-          50: "#F9E6EA",
-          100: "#F3CED4",
-          200: "#E6A1AB",
-          300: "#D97382",
-          400: "#CC4559",
-          500: "#8E1530",
-          600: "#7B1129",
-          700: "#660E22",
-          800: "#510A1B",
-          900: "#3C0714",
-        },
-        purple: {
+        secondary: {
+          DEFAULT: "hsl(var(--secondary))",
+          foreground: "hsl(var(--secondary-foreground))",
           50:  '#FBEFF2',
           100: '#F7D8E0',
           200: '#EDADC1',
@@ -61,14 +51,6 @@ export default {
           700: '#7D1F3E',
           800: '#57142A',
           900: '#310A17',
-        },
-        primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
-        },
-        secondary: {
-          DEFAULT: "hsl(var(--secondary))",
-          foreground: "hsl(var(--secondary-foreground))",
         },
         muted: {
           DEFAULT: "hsl(var(--muted))",

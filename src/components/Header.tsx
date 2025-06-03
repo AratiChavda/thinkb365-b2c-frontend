@@ -70,22 +70,22 @@ export const Header = () => {
             whileHover={{ rotate: 15 }}
             transition={{ type: "spring", stiffness: 300 }}
           >
-            <BookOpen className="h-6 w-6 text-indigo-600 group-hover:text-indigo-700 transition-colors" />
+            <BookOpen className="h-6 w-6 text-primary-600 group-hover:text-primary-700 transition-colors" />
           </motion.div>
           <motion.span
-            className="text-xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent"
+            className="text-xl font-bold bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent"
             whileHover={{ scale: 1.05 }}
           >
-            Think365
+            NewsCorp - FSS
           </motion.span>
         </div>
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-              <Avatar className="cursor-pointer border-2 border-indigo-100 hover:border-indigo-200 transition-colors">
+              <Avatar className="cursor-pointer border-2 border-primary-100 hover:border-primary-200 transition-colors">
                 <AvatarImage src="/images/avatar.jpg" />
-                <AvatarFallback className="bg-indigo-100 text-indigo-600 font-medium">
+                <AvatarFallback className="bg-primary-100 text-primary-600 font-medium">
                   AC
                 </AvatarFallback>
               </Avatar>
@@ -144,13 +144,14 @@ export const Header = () => {
               whileHover={{ rotate: 15 }}
               transition={{ type: "spring", stiffness: 300 }}
             >
-              <BookOpen className="h-6 w-6 text-indigo-600 group-hover:text-indigo-700 transition-colors" />
+              <img src="/public/News_Corp_logo.svg" className="h-8 mt-2 w-full" />
+              {/* <BookOpen className="h-6 w-6 text-primary-600 group-hover:text-primary-700 transition-colors" /> */}
             </motion.div>
             <motion.span
-              className="text-xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent"
+              className="text-xl font-bold bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent"
               whileHover={{ scale: 1.05 }}
             >
-              Think365
+              - FSS
             </motion.span>
           </div>
 
@@ -159,11 +160,11 @@ export const Header = () => {
               <motion.a
                 key={item.name}
                 href={item.href}
-                className="relative text-gray-600 hover:text-indigo-600 transition-colors group"
+                className="relative text-gray-600 hover:text-primary-600 transition-colors group"
                 whileHover={{ scale: 1.05 }}
               >
                 {item.name}
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-indigo-600 transition-all group-hover:w-full"></span>
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary-600 transition-all group-hover:w-full"></span>
               </motion.a>
             ))}
           </div>
@@ -173,7 +174,7 @@ export const Header = () => {
               <Button
                 variant="ghost"
                 onClick={() => navigate("/login")}
-                className="text-gray-600 hover:text-indigo-600"
+                className="text-gray-600 hover:text-primary-600"
               >
                 Sign In
               </Button>
@@ -181,7 +182,7 @@ export const Header = () => {
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <Button
                 onClick={() => navigate("/products")}
-                className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 shadow-lg shadow-indigo-500/20"
+                className="bg-gradient-to-r from-primary-600 to-secondary-600 hover:from-primary-700 hover:to-secondary-700 shadow-lg shadow-primary-500/20"
               >
                 Subscribe
               </Button>
@@ -217,7 +218,7 @@ export const Header = () => {
                   <motion.a
                     key={item.name}
                     href={item.href}
-                    className="flex items-center justify-between py-2 text-gray-600 hover:text-indigo-600 transition-colors"
+                    className="flex items-center justify-between py-2 text-gray-600 hover:text-primary-600 transition-colors"
                     whileHover={{ x: 5 }}
                     onClick={() => setMobileMenuOpen(false)}
                   >
@@ -237,7 +238,7 @@ export const Header = () => {
                     Sign In
                   </Button>
                   <Button
-                    className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700"
+                    className="w-full bg-gradient-to-r from-primary-600 to-secondary-600 hover:from-primary-700 hover:to-secondary-700"
                     onClick={() => {
                       navigate("/products");
                       setMobileMenuOpen(false);

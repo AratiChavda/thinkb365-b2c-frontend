@@ -75,7 +75,7 @@ export default function AdminDashboard() {
         {[...Array(8)].map((_, i) => (
           <motion.div
             key={i}
-            className="absolute rounded-full bg-blue-400/10 dark:bg-purple-500/10"
+            className="absolute rounded-full bg-primary-400/10 dark:bg-secondary-500/10"
             style={{
               width: Math.random() * 200 + 100,
               height: Math.random() * 200 + 100,
@@ -100,7 +100,7 @@ export default function AdminDashboard() {
       <header className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4 relative z-10">
         <div>
           <motion.h1
-            className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400"
+            className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary-600 to-secondary-600 dark:from-primary-400 dark:to-secondary-400"
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
@@ -117,10 +117,10 @@ export default function AdminDashboard() {
             variant="ghost" 
             size="icon"
             onClick={startListening}
-            className={`rounded-full backdrop-blur-lg bg-white/50 dark:bg-black/50 ${isListening ? 'animate-pulse ring-2 ring-blue-500' : ''}`}
+            className={`rounded-full backdrop-blur-lg bg-white/50 dark:bg-black/50 ${isListening ? 'animate-pulse ring-2 ring-primary-500' : ''}`}
           >
             {isListening ? (
-              <div className="w-4 h-4 rounded-full bg-blue-500 animate-pulse" />
+              <div className="w-4 h-4 rounded-full bg-primary-500 animate-pulse" />
             ) : (
               <MessageSquare className="h-4 w-4" />
             )}
@@ -162,7 +162,7 @@ export default function AdminDashboard() {
 
           <Button
             variant="default"
-            className="rounded-full bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg"
+            className="rounded-full bg-gradient-to-r from-primary-600 to-secondary-600 text-white shadow-lg"
             onClick={generateInsight}
             disabled={isLoadingInsight}
           >
@@ -180,14 +180,14 @@ export default function AdminDashboard() {
 
       {voiceCommand && (
         <motion.div
-          className="mb-6 p-4 rounded-lg bg-white/80 dark:bg-black/50 backdrop-blur-lg border border-blue-200 dark:border-purple-800 shadow-md relative z-10"
+          className="mb-6 p-4 rounded-lg bg-white/80 dark:bg-black/50 backdrop-blur-lg border border-primary-200 dark:border-secondary-800 shadow-md relative z-10"
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0 }}
         >
           <div className="flex items-start gap-3">
-            <div className="bg-blue-100 dark:bg-blue-900/50 p-2 rounded-full">
-              <MessageSquare className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+            <div className="bg-primary-100 dark:bg-primary-900/50 p-2 rounded-full">
+              <MessageSquare className="h-4 w-4 text-primary-600 dark:text-primary-400" />
             </div>
             <div>
               <p className="font-medium">Voice command detected:</p>
@@ -199,13 +199,13 @@ export default function AdminDashboard() {
 
       {aiInsight && (
         <motion.div
-          className="mb-6 p-4 rounded-lg bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/30 dark:to-purple-900/30 backdrop-blur-lg border border-blue-200 dark:border-purple-800 shadow-md relative z-10"
+          className="mb-6 p-4 rounded-lg bg-gradient-to-r from-primary-50 to-secondary-50 dark:from-primary-900/30 dark:to-secondary-900/30 backdrop-blur-lg border border-primary-200 dark:border-secondary-800 shadow-md relative z-10"
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
         >
           <div className="flex items-start gap-3">
-            <div className="bg-blue-100 dark:bg-blue-900/50 p-2 rounded-full">
-              <TrendingUp className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+            <div className="bg-primary-100 dark:bg-primary-900/50 p-2 rounded-full">
+              <TrendingUp className="h-4 w-4 text-primary-600 dark:text-primary-400" />
             </div>
             <div>
               <p className="font-medium">AI Insight:</p>
@@ -220,28 +220,28 @@ export default function AdminDashboard() {
           <TabsList className="bg-white/50 dark:bg-black/50 backdrop-blur-lg p-1 rounded-full">
             <TabsTrigger
               value="overview"
-              className="rounded-full data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-600 data-[state=active]:to-purple-600 data-[state=active]:text-white"
+              className="rounded-full data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary-600 data-[state=active]:to-secondary-600 data-[state=active]:text-white"
             >
               <BarChart2 className="h-4 w-4 mr-2" />
               Overview
             </TabsTrigger>
             <TabsTrigger
               value="subscribers"
-              className="rounded-full data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-600 data-[state=active]:to-purple-600 data-[state=active]:text-white"
+              className="rounded-full data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary-600 data-[state=active]:to-secondary-600 data-[state=active]:text-white"
             >
               <Users className="h-4 w-4 mr-2" />
               Subscribers
             </TabsTrigger>
             <TabsTrigger
               value="products"
-              className="rounded-full data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-600 data-[state=active]:to-purple-600 data-[state=active]:text-white"
+              className="rounded-full data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary-600 data-[state=active]:to-secondary-600 data-[state=active]:text-white"
             >
               <Package className="h-4 w-4 mr-2" />
               Products
             </TabsTrigger>
             <TabsTrigger
               value="promotions"
-              className="rounded-full data-[state=active]:bg-gradient-to-r data-[state=active]:from-blue-600 data-[state=active]:to-purple-600 data-[state=active]:text-white"
+              className="rounded-full data-[state=active]:bg-gradient-to-r data-[state=active]:from-primary-600 data-[state=active]:to-secondary-600 data-[state=active]:text-white"
             >
               <Tag className="h-4 w-4 mr-2" />
               Promotions
@@ -331,7 +331,7 @@ export default function AdminDashboard() {
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.95 }}
           onClick={() => setRadialMenuOpen(!isRadialMenuOpen)}
-          className="w-14 h-14 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 shadow-xl cursor-pointer flex items-center justify-center text-white"
+          className="w-14 h-14 rounded-full bg-gradient-to-br from-primary-500 to-secondary-600 shadow-xl cursor-pointer flex items-center justify-center text-white"
         >
           <Plus className="h-6 w-6" />
         </motion.div>
@@ -496,7 +496,7 @@ function ActivityFeed() {
           whileHover={{ x: 5 }}
           className="flex items-start gap-3 p-2 rounded-lg hover:bg-white/20 dark:hover:bg-black/20 transition-colors"
         >
-          <div className="p-2 rounded-full bg-blue-100 dark:bg-blue-900/50">
+          <div className="p-2 rounded-full bg-primary-100 dark:bg-primary-900/50">
             {activity.icon}
           </div>
           <div>
@@ -544,7 +544,7 @@ function RadialMenu({
                 item.action();
                 onClose();
               }}
-              className="absolute w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white shadow-lg"
+              className="absolute w-12 h-12 rounded-full bg-gradient-to-br from-primary-500 to-secondary-600 flex items-center justify-center text-white shadow-lg"
               style={{ left: x, top: y }}
             >
               {item.icon}

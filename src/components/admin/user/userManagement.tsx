@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { AnimatePresence, motion } from "framer-motion";
-import { brandAPI } from "@/lib/api";
+import { userAPI } from "@/lib/api";
 import { Icons } from "@/components/icons";
 import { Card, CardContent } from "@/components/ui/card";
 import {
@@ -15,10 +15,12 @@ import { DataTablePagination } from "@/components/table/dataTablePagination";
 import { useTableData } from "@/hooks/useTableData";
 import GlobalFilter from "@/components/table/globalFilter";
 import { getFormattedDate } from "@/lib/utils";
+import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-const BrandManagement = ({ setIsAdding, setEditingId }: any) => {
+const UserManagement = ({ setIsAdding, setEditingId }: any) => {
   const [viewMode, setViewMode] = useState<"table" | "grid">("table");
-  const [brands, setBrands] = useState<any[]>([]);
+  const [users, setUsers] = useState<any[]>([]);
   const {
     paginatedData,
     page,
@@ -28,26 +30,46 @@ const BrandManagement = ({ setIsAdding, setEditingId }: any) => {
     setSorting,
     globalFilter,
     setGlobalFilter,
-  } = useTableData({ data: brands, initialPageSize: 10 });
+  } = useTableData({ data: users, initialPageSize: 10 });
 
   useEffect(() => {
-    fetchBrands();
+    fetchUsers();
   }, []);
 
-  const fetchBrands = async () => {
+  const fetchUsers = async () => {
     try {
-      const response = await brandAPI.getAll();
-      setBrands(response.data);
+      const response = await userAPI.getAll();
+      setUsers(response.data);
     } catch (error) {
-      console.error("Error fetching brands:", error);
+      console.error("Error fetching users:", error);
     }
   };
 
-  const startEdit = (brand: any) => {
-    setEditingId(brand.id);
+  const startEdit = (user: any) => {
+    setEditingId(user.id);
     setIsAdding(true);
   };
 
+  const getInitials = (name: string) => {
+    return name
+      .split(" ")
+      .map((n) => n[0])
+      .join("")
+      .toUpperCase();
+  };
+
+  const getRoleColor = (role: string) => {
+    switch (role) {
+      case "administrator":
+        return "bg-red-100 text-red-800 hover:bg-red-200";
+      case "subscriber":
+        return "bg-green-100 text-green-800 hover:bg-green-200";
+      case "household_subscriber":
+        return "bg-blue-100 text-blue-800 hover:bg-blue-200";
+      default:
+        return "bg-gray-100 text-gray-800 hover:bg-gray-200";
+    }
+  };
   return (
     <div className="w-full p-4">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
@@ -57,10 +79,10 @@ const BrandManagement = ({ setIsAdding, setEditingId }: any) => {
           transition={{ duration: 0.3 }}
         >
           <h1 className="text-2xl sm:text-3xl font-bold text-gray-800">
-            Brands
+            Users
           </h1>
           <p className="text-sm sm:text-base text-gray-500">
-            Manage your brand listings
+            Manage system users and permissions
           </p>
         </motion.div>
 
@@ -91,7 +113,7 @@ const BrandManagement = ({ setIsAdding, setEditingId }: any) => {
               }}
             >
               <Icons.plus className="mr-2 h-4 w-4" />
-              Add Brand
+              Add User
             </Button>
           </div>
         </motion.div>
@@ -107,8 +129,23 @@ const BrandManagement = ({ setIsAdding, setEditingId }: any) => {
                 accessorKey: "name",
               },
               {
-                header: "Description",
-                accessorKey: "description",
+                header: "Email",
+                accessorKey: "email",
+              },
+              {
+                header: "Role",
+                accessorKey: "role",
+                cell: ({ _, row }: any) => {
+                  return (
+                    <Badge
+                      className={`${getRoleColor(
+                        row.original.role
+                      )} px-3 py-1 rounded-full text-xs font-medium`}
+                    >
+                      {row.original.role.replace("_", " ")}
+                    </Badge>
+                  );
+                },
               },
               {
                 header: "Created At",
@@ -157,24 +194,21 @@ const BrandManagement = ({ setIsAdding, setEditingId }: any) => {
                   <Card className="hover:shadow-lg transition-shadow duration-300 rounded-xl border-0">
                     <CardContent className="p-4 sm:p-6">
                       <div className="flex justify-between items-start mb-4">
-                        <div>
-                          <div className="flex items-center gap-3">
-                            {item.logo_url && (
-                              <div className="flex-shrink-0 h-8 w-8 rounded-md bg-gray-100 overflow-hidden">
-                                <img
-                                  src={item.logo_url}
-                                  alt={item.name}
-                                  className="h-full w-full object-contain"
-                                />
-                              </div>
-                            )}
-                            <h3 className="text-base sm:text-lg font-semibold">
+                        <div className="flex items-center space-x-4">
+                          <Avatar className="h-12 w-12">
+                            <AvatarImage src={item.avatar} />
+                            <AvatarFallback className="bg-indigo-100 text-indigo-600">
+                              {getInitials(item.name)}
+                            </AvatarFallback>
+                          </Avatar>
+                          <div>
+                            <h3 className="text-lg font-semibold">
                               {item.name}
                             </h3>
+                            <p className="text-sm text-gray-600">
+                              {item.email}
+                            </p>
                           </div>
-                          <p className="text-sm text-gray-600">
-                            {item.description}
-                          </p>
                         </div>
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
@@ -197,6 +231,13 @@ const BrandManagement = ({ setIsAdding, setEditingId }: any) => {
                           </DropdownMenuContent>
                         </DropdownMenu>
                       </div>
+                      <Badge
+                        className={`${getRoleColor(
+                          item.role
+                        )} px-3 py-1 rounded-full text-xs font-medium`}
+                      >
+                        {item.role.replace("_", " ")}
+                      </Badge>
                       <div className="flex items-center text-xs text-gray-500 mt-2">
                         <Icons.calendar className="h-4 w-4 mr-1" />
                         Created {getFormattedDate(item.created_at)}
@@ -217,12 +258,12 @@ const BrandManagement = ({ setIsAdding, setEditingId }: any) => {
         >
           <Card className="rounded-xl border-0 shadow-md bg-[radial-gradient(circle_at_bottom_left,_var(--tw-gradient-stops))] from-primary-100/30 via-primary-50/30 to-primary-100/30">
             <CardContent className="p-8 text-center">
-              <Icons.brand className="h-12 w-12 text-gray-300 mx-auto mb-4" />
+              <Icons.users className="h-12 w-12 text-gray-300 mx-auto mb-4" />
               <h3 className="text-lg font-medium text-gray-900 mb-1">
                 No categories found
               </h3>
               <p className="text-gray-500 mb-6">
-                Try adjusting your search or create a new brand
+                Try adjusting your search or create a new user
               </p>
               <Button
                 onClick={() => {
@@ -232,7 +273,7 @@ const BrandManagement = ({ setIsAdding, setEditingId }: any) => {
                 className="bg-gradient-to-r from-primary-600 to-primary-600 hover:from-primary-700 hover:to-primary-700 rounded-full shadow-md"
               >
                 <Icons.plus className="h-4 w-4 mr-2" />
-                Add Brand
+                Add User
               </Button>
             </CardContent>
           </Card>
@@ -247,4 +288,4 @@ const BrandManagement = ({ setIsAdding, setEditingId }: any) => {
   );
 };
 
-export default BrandManagement;
+export default UserManagement;

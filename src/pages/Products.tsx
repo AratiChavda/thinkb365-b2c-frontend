@@ -151,7 +151,7 @@
 //   return (
 //     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
 //       {/* Hero Section */}
-//       <div className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-16 px-4">
+//       <div className="bg-gradient-to-r from-primary-600 to-primary-600 text-white py-16 px-4">
 //         <div className="container mx-auto text-center">
 //           <h1 className="text-4xl font-bold mb-4">Choose Your Perfect Plan</h1>
 //           <p className="text-xl mb-8 max-w-2xl mx-auto">
@@ -237,7 +237,7 @@
 //                                 : [...filters.types, type],
 //                             })
 //                           }
-//                           className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+//                           className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
 //                         />
 //                         <label
 //                           htmlFor={`type-${type}`}
@@ -358,7 +358,7 @@
 //                                     : [...filters.types, type],
 //                                 })
 //                               }
-//                               className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+//                               className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
 //                             />
 //                             <label
 //                               htmlFor={`mobile-type-${type}`}
@@ -533,8 +533,8 @@
 // }) {
 //   const getTypeBadge = (type: SubscriptionType) => {
 //     const styles = {
-//       [SubscriptionType.PRINT]: "bg-blue-100 text-blue-800",
-//       [SubscriptionType.DIGITAL]: "bg-purple-100 text-purple-800",
+//       [SubscriptionType.PRINT]: "bg-primary-100 text-primary-800",
+//       [SubscriptionType.DIGITAL]: "bg-primary-100 text-primary-800",
 //       [SubscriptionType.PRINT_AND_DIGITAL]: "bg-green-100 text-green-800",
 //     };
 //     return styles[type] || "bg-gray-100 text-gray-800";
@@ -547,7 +547,7 @@
 //     >
 //       <Card
 //         className={`h-full flex flex-col overflow-hidden ${
-//           isInCompare ? "ring-2 ring-indigo-500" : ""
+//           isInCompare ? "ring-2 ring-primary-500" : ""
 //         }`}
 //       >
 //         <div className="relative h-48 overflow-hidden">

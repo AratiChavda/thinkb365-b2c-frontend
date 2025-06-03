@@ -1,6 +1,5 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import Dashboard from "@/pages/dashboard";
-import UserManagement from "@/pages/dashboard/UserManagement";
 import LandingPage from "@/pages/LandingPage";
 import Products from "@/pages/Products";
 import ComparePage from "@/pages/ComparePage";
@@ -23,6 +22,7 @@ import PlansPage from "@/pages/plansPage";
 import ProductDetailPage from "@/pages/productDetailPage";
 import SuccessPage from "@/pages/successPage";
 import { useSelector } from "react-redux";
+import UserPage from "@/pages/dashboard/admin/userPage";
 
 export default function AppRoutes() {
   const isAuthenticated = useSelector((state: any) => state.auth?.accessToken);
@@ -65,7 +65,7 @@ export default function AppRoutes() {
         {userRole === "administrator" && (
           <>
             <Route index element={<Dashboard />} />
-            <Route path="users" element={<UserManagement />} />
+            <Route path="users" element={<UserPage />} />
             <Route path="brands" element={<BrandPage />} />
             <Route path="categories" element={<CategoryPage />} />
             <Route path="products" element={<ProductPage />} />
@@ -75,7 +75,7 @@ export default function AppRoutes() {
             <Route path="payment-methods" element={<PaymentMethodsPage />} />
             <Route path="add-ons" element={<AddOnPage />} />
             <Route path="promotions" element={<PromoCodePage />} />
-            {/* <Route path="*" element={<div>404 Not Found</div>} /> */}
+            <Route path="*" element={<div>404 Not Found</div>} />
           </>
         )}
 
@@ -85,7 +85,7 @@ export default function AppRoutes() {
             <Route path="subscriptions" element={<SubscriptionPage />} />
             <Route path="billing" element={<BillingPage />} />
             <Route path="payment-methods" element={<PaymentMethodsPage />} />
-            {/* <Route path="*" element={<div>404 Not Found</div>} /> */}
+            <Route path="*" element={<div>404 Not Found</div>} />
           </>
         )}
       </Route>

@@ -72,7 +72,7 @@ export default function LandingPage() {
   return (
     <div className="min-h-screen bg-white">
       <section className="relative h-screen flex items-center justify-center overflow-hidden pt-16">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,_var(--tw-gradient-stops))] from-indigo-100 via-purple-50 to-blue-100 opacity-70"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,_var(--tw-gradient-stops))] from-primary-100 via-secondary-50 to-primary-100 opacity-70"></div>
         <div className="absolute inset-0 bg-[url('/images/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]"></div>
 
         <div className="container mx-auto px-6 relative z-10">
@@ -84,7 +84,7 @@ export default function LandingPage() {
               className="lg:w-1/2 space-y-8"
             >
               <h1 className="text-5xl md:text-6xl font-bold leading-tight">
-                <span className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600">
+                <span className="bg-clip-text text-transparent bg-gradient-to-r from-primary-600 to-secondary-600">
                   Elevate Your Reading
                 </span>
                 <br />
@@ -98,7 +98,7 @@ export default function LandingPage() {
               <div className="flex flex-col sm:flex-row gap-4">
                 <Button
                   size="lg"
-                  className="bg-indigo-600 hover:bg-indigo-700 shadow-lg shadow-indigo-500/20"
+                  className="bg-primary-600 hover:bg-primary-700 shadow-lg shadow-primary-500/20"
                   onClick={() => navigate("/plans")}
                 >
                   Explore Plans <ArrowRight className="ml-2 h-5 w-5" />
@@ -150,18 +150,20 @@ export default function LandingPage() {
               className="lg:w-1/2 relative"
             >
               <div className="relative">
-                <div className="absolute -top-8 -left-8 w-64 h-64 bg-purple-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
-                <div className="absolute -bottom-8 -right-8 w-64 h-64 bg-indigo-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
+                <div className="absolute -top-8 -left-8 w-64 h-64 bg-secondary-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
+                <div className="absolute -bottom-8 -right-8 w-64 h-64 bg-primary-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
                 <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-pink-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
 
                 <div className="relative rounded-2xl bg-white shadow-2xl overflow-hidden border border-gray-100">
                   <div className="p-6">
                     <div className="flex items-center justify-between mb-6">
                       <div className="flex items-center space-x-2">
-                        <BookOpen className="h-6 w-6 text-indigo-600" />
-                        <span className="font-semibold">Think365 Premium</span>
+                        <BookOpen className="h-6 w-6 text-primary-600" />
+                        <span className="font-semibold">
+                          NewsCorp - FSS Premium
+                        </span>
                       </div>
-                      <span className="px-3 py-1 bg-indigo-100 text-indigo-800 text-sm font-medium rounded-full">
+                      <span className="px-3 py-1 bg-primary-100 text-primary-800 text-sm font-medium rounded-full">
                         Most Popular
                       </span>
                     </div>
@@ -192,7 +194,7 @@ export default function LandingPage() {
                           <span className="text-3xl font-bold">$29</span>
                           <span className="text-gray-600">/month</span>
                         </div>
-                        <Button className="bg-indigo-600 hover:bg-indigo-700">
+                        <Button className="bg-primary-600 hover:bg-primary-700">
                           Subscribe Now
                         </Button>
                       </div>
@@ -238,7 +240,7 @@ export default function LandingPage() {
             className="text-center max-w-3xl mx-auto mb-16"
           >
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Why Readers Choose Think365
+              Why Readers Choose NewsCorp - FSS
             </h2>
             <p className="text-xl text-gray-600">
               We've reimagined the subscription experience to give you more of
@@ -255,37 +257,37 @@ export default function LandingPage() {
           >
             {[
               {
-                icon: <Newspaper className="h-8 w-8 text-indigo-600" />,
+                icon: <Newspaper className="h-8 w-8 text-primary-600" />,
                 title: "Print Perfection",
                 description:
                   "Premium quality print delivered to your doorstep with flexible scheduling options.",
               },
               {
-                icon: <TabletSmartphone className="h-8 w-8 text-indigo-600" />,
+                icon: <TabletSmartphone className="h-8 w-8 text-primary-600" />,
                 title: "Digital Excellence",
                 description:
                   "Seamless reading experience across all your devices with offline access.",
               },
               {
-                icon: <Globe className="h-8 w-8 text-indigo-600" />,
+                icon: <Globe className="h-8 w-8 text-primary-600" />,
                 title: "Global Content",
                 description:
                   "Access international editions and exclusive global content not available elsewhere.",
               },
               {
-                icon: <Award className="h-8 w-8 text-indigo-600" />,
+                icon: <Award className="h-8 w-8 text-primary-600" />,
                 title: "Curated Selections",
                 description:
                   "Expertly curated content tailored to your interests and reading habits.",
               },
               {
-                icon: <Bookmark className="h-8 w-8 text-indigo-600" />,
+                icon: <Bookmark className="h-8 w-8 text-primary-600" />,
                 title: "Save & Organize",
                 description:
                   "Bookmark, annotate, and organize your favorite articles for future reference.",
               },
               {
-                icon: <Clock className="h-8 w-8 text-indigo-600" />,
+                icon: <Clock className="h-8 w-8 text-primary-600" />,
                 title: "Early Access",
                 description:
                   "Get content before it's officially published with our subscriber previews.",
@@ -298,7 +300,7 @@ export default function LandingPage() {
               >
                 <Card className="h-full p-6 hover:shadow-lg transition-shadow">
                   <CardContent className="space-y-4">
-                    <div className="p-3 bg-indigo-50 rounded-lg w-fit">
+                    <div className="p-3 bg-primary-50 rounded-lg w-fit">
                       {feature.icon}
                     </div>
                     <h3 className="text-xl font-semibold">{feature.title}</h3>
@@ -362,11 +364,11 @@ export default function LandingPage() {
                 >
                   <Card
                     className={`overflow-hidden transition-all ${
-                      product.featured ? "border-2 border-indigo-500" : ""
+                      product.featured ? "border-2 border-primary-500" : ""
                     }`}
                   >
                     {product.featured && (
-                      <div className="bg-indigo-600 text-white text-sm font-medium py-1 px-4 text-center">
+                      <div className="bg-primary-600 text-white text-sm font-medium py-1 px-4 text-center">
                         Most Popular
                       </div>
                     )}
@@ -380,15 +382,15 @@ export default function LandingPage() {
                             {product.description}
                           </CardDescription>
                         </div>
-                        <div className="p-3 bg-indigo-100 rounded-lg">
+                        <div className="p-3 bg-primary-100 rounded-lg">
                           {product.type === "print" && (
-                            <Newspaper className="h-6 w-6 text-indigo-600" />
+                            <Newspaper className="h-6 w-6 text-primary-600" />
                           )}
                           {product.type === "digital" && (
-                            <TabletSmartphone className="h-6 w-6 text-indigo-600" />
+                            <TabletSmartphone className="h-6 w-6 text-primary-600" />
                           )}
                           {product.type === "combo" && (
-                            <Package className="h-6 w-6 text-indigo-600" />
+                            <Package className="h-6 w-6 text-primary-600" />
                           )}
                         </div>
                       </div>
@@ -455,7 +457,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <section id="benefits" className="py-20 bg-indigo-50">
+      <section id="benefits" className="py-20 bg-primary-50">
         <div className="container mx-auto px-6">
           <div className="flex flex-col lg:flex-row items-center gap-12">
             <motion.div
@@ -500,8 +502,8 @@ export default function LandingPage() {
                     whileHover={{ x: 5 }}
                     className="flex items-start gap-4"
                   >
-                    <div className="p-2 bg-indigo-100 rounded-lg mt-1">
-                      <CheckCircle className="h-5 w-5 text-indigo-600" />
+                    <div className="p-2 bg-primary-100 rounded-lg mt-1">
+                      <CheckCircle className="h-5 w-5 text-primary-600" />
                     </div>
                     <div>
                       <h3 className="font-semibold text-lg">{item.title}</h3>
@@ -536,7 +538,7 @@ export default function LandingPage() {
                 </div>
               </div>
 
-              <div className="absolute -bottom-6 -left-6 w-32 h-32 bg-purple-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 z-0"></div>
+              <div className="absolute -bottom-6 -left-6 w-32 h-32 bg-secondary-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 z-0"></div>
             </motion.div>
           </div>
         </div>
@@ -572,7 +574,7 @@ export default function LandingPage() {
                 name: "Michael Chen",
                 role: "Avid Reader",
                 content:
-                  "I've tried many subscriptions but Think365's curated content is truly next level. Worth every penny.",
+                  "I've tried many subscriptions but NewsCorp - FSS's curated content is truly next level. Worth every penny.",
                 rating: 5,
               },
               {
@@ -632,7 +634,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <section className="py-20 bg-gradient-to-r from-indigo-600 to-purple-600 relative overflow-hidden">
+      <section className="py-20 bg-gradient-to-r from-primary-600 to-secondary-600 relative overflow-hidden">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute inset-0 bg-[url('/images/grid-white.svg')] bg-center"></div>
         </div>
@@ -652,10 +654,10 @@ export default function LandingPage() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
               viewport={{ once: true }}
-              className="text-xl text-indigo-100 mb-8"
+              className="text-xl text-primary-100 mb-8"
             >
               Join thousands of readers who've discovered their next favorite
-              read with Think365.
+              read with NewsCorp - FSS.
             </motion.p>
 
             <motion.div
@@ -667,7 +669,7 @@ export default function LandingPage() {
             >
               <Button
                 size="lg"
-                className="bg-white text-indigo-600 hover:bg-gray-100 shadow-lg"
+                className="bg-white text-primary-600 hover:bg-gray-100 shadow-lg"
                 onClick={() => navigate("/plans")}
               >
                 Get Started
@@ -707,7 +709,7 @@ export default function LandingPage() {
                     onChange={(e: any) => setEmail(e.target.value)}
                     className="flex-1"
                   />
-                  <Button className="bg-indigo-600 hover:bg-indigo-700">
+                  <Button className="bg-primary-600 hover:bg-primary-700">
                     Subscribe
                   </Button>
                 </div>

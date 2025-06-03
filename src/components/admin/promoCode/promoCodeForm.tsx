@@ -260,7 +260,7 @@ const PromoCodeForm = ({ editingId, onCancel }: any) => {
                         <FormControl>
                           <Button
                             variant="outline"
-                            className={`w-full pl-3 text-left font-normal focus-visible:ring-blue-500 ${
+                            className={`w-full pl-3 text-left font-normal focus-visible:ring-primary-500 ${
                               !field.value && "text-muted-foreground"
                             }`}
                           >
@@ -269,7 +269,7 @@ const PromoCodeForm = ({ editingId, onCancel }: any) => {
                             ) : (
                               <span>Pick a date</span>
                             )}
-                            <Icons.calender className="ml-auto h-4 w-4 opacity-50" />
+                            <Icons.calendar className="ml-auto h-4 w-4 opacity-50" />
                           </Button>
                         </FormControl>
                       </PopoverTrigger>
@@ -298,7 +298,7 @@ const PromoCodeForm = ({ editingId, onCancel }: any) => {
                         <FormControl>
                           <Button
                             variant="outline"
-                            className={`w-full pl-3 text-left font-normal focus-visible:ring-blue-500 ${
+                            className={`w-full pl-3 text-left font-normal focus-visible:ring-primary-500 ${
                               !field.value && "text-muted-foreground"
                             }`}
                           >
@@ -307,7 +307,7 @@ const PromoCodeForm = ({ editingId, onCancel }: any) => {
                             ) : (
                               <span>Pick a date</span>
                             )}
-                            <Icons.calender className="ml-auto h-4 w-4 opacity-50" />
+                            <Icons.calendar className="ml-auto h-4 w-4 opacity-50" />
                           </Button>
                         </FormControl>
                       </PopoverTrigger>

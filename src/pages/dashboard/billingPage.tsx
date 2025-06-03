@@ -86,11 +86,11 @@ export default function BillingPage() {
                 >
                   <div className="flex items-center gap-3">
                     {method.type === "VISA" ? (
-                      <div className="p-2 bg-blue-100 rounded-lg text-blue-600">
+                      <div className="p-2 bg-primary-100 rounded-lg text-primary-600">
                         <CreditCard className="h-5 w-5" />
                       </div>
                     ) : (
-                      <div className="p-2 bg-indigo-100 rounded-lg text-indigo-600">
+                      <div className="p-2 bg-primary-100 rounded-lg text-primary-600">
                         <Receipt className="h-5 w-5" />
                       </div>
                     )}

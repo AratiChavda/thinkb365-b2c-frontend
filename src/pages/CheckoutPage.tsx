@@ -256,15 +256,15 @@ const CheckoutPage = () => {
                   <input
                     type="checkbox"
                     id="terms"
-                    className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                    className="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
                   />
                   <label htmlFor="terms" className="text-sm text-gray-600">
                     I agree to the{" "}
-                    <a href="#" className="text-indigo-600 hover:underline">
+                    <a href="#" className="text-primary-600 hover:underline">
                       Terms of Service
                     </a>{" "}
                     and{" "}
-                    <a href="#" className="text-indigo-600 hover:underline">
+                    <a href="#" className="text-primary-600 hover:underline">
                       Privacy Policy
                     </a>
                   </label>

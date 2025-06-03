@@ -36,7 +36,7 @@ const PaymentSuccess = () => {
   };
 
   return (
-    <div className="min-h-screen bg-blue-50 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-primary-50 flex items-center justify-center p-4">
       <motion.div
         className="bg-white rounded-2xl shadow-xl p-8 max-w-md w-full text-center"
         initial={{ scale: 0.95, opacity: 0 }}
@@ -44,18 +44,18 @@ const PaymentSuccess = () => {
         transition={{ duration: 0.3 }}
       >
         <div className="mb-6">
-          <CheckCircleIcon className="w-20 h-20 text-blue-600 mx-auto mb-4" />
+          <CheckCircleIcon className="w-20 h-20 text-primary-600 mx-auto mb-4" />
           <h1 className="text-3xl font-bold text-gray-800 mb-2">
             Payment Successful!
           </h1>
-          <p className="text-blue-600 mb-6">Thank you for your subscription</p>
+          <p className="text-primary-600 mb-6">Thank you for your subscription</p>
         </div>
 
         <div className="space-y-4">
           <motion.button
             onClick={handleActivate}
             disabled={isActivating}
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 px-6 rounded-lg
+            className="w-full bg-primary-600 hover:bg-primary-700 text-white py-3 px-6 rounded-lg
                      flex items-center justify-center gap-2 font-medium transition-colors"
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
@@ -66,8 +66,8 @@ const PaymentSuccess = () => {
 
           <button
             onClick={() => navigate("/")}
-            className="w-full border-2 border-blue-600 text-blue-600 py-3 px-6 rounded-lg
-                     hover:bg-blue-50 transition-colors font-medium flex items-center justify-center gap-2"
+            className="w-full border-2 border-primary-600 text-primary-600 py-3 px-6 rounded-lg
+                     hover:bg-primary-50 transition-colors font-medium flex items-center justify-center gap-2"
           >
             <ClockIcon className="w-5 h-5" />
             Activate Later

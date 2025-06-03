@@ -39,7 +39,7 @@
 //       renewalDate: "Jun 15, 2023",
 //       features: ["10 premium articles", "Ad-free", "4K streaming"],
 //       utilization: "8/10 features used",
-//       icon: <SparklesIcon className="h-6 w-6 text-purple-500" />,
+//       icon: <SparklesIcon className="h-6 w-6 text-secondary-500" />,
 //     },
 //     {
 //       id: "sub_002",
@@ -49,7 +49,7 @@
 //       renewalDate: "Jun 10, 2023",
 //       features: ["500GB storage", "File versioning"],
 //       utilization: "45% used",
-//       icon: <CubeIcon className="h-6 w-6 text-blue-500" />,
+//       icon: <CubeIcon className="h-6 w-6 text-primary-500" />,
 //     },
 //     {
 //       id: "sub_003",
@@ -75,7 +75,7 @@
 //       title: "Family Plan",
 //       description: "Share with 5 family members",
 //       action: "Upgrade now",
-//       icon: <UsersIcon className="h-5 w-5 text-indigo-500" />,
+//       icon: <UsersIcon className="h-5 w-5 text-primary-500" />,
 //     },
 //   ];
 
@@ -118,7 +118,7 @@
 //             whileHover={{ scale: 1.03 }}
 //             whileTap={{ scale: 0.98 }}
 //             onClick={() => navigate("/add-subscription")}
-//             className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-purple-600 to-indigo-600 px-4 py-2.5 text-white shadow-lg shadow-purple-100 transition-all hover:shadow-xl"
+//             className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-secondary-600 to-primary-600 px-4 py-2.5 text-white shadow-lg shadow-secondary-100 transition-all hover:shadow-xl"
 //           >
 //             <SparklesIcon className="h-5 w-5" />
 //             <span>Add Service</span>
@@ -136,7 +136,7 @@
 //       {/* Metrics Grid */}
 //       <div className="mb-8 grid grid-cols-1 gap-4 md:grid-cols-4">
 //         <MetricCard
-//           icon={<UsersIcon className="h-6 w-6 text-indigo-600" />}
+//           icon={<UsersIcon className="h-6 w-6 text-primary-600" />}
 //           title="Active Subscriptions"
 //           value={subscriptionData.activeCount}
 //           trend="+1 this month"
@@ -157,7 +157,7 @@
 //           trendPositive={false}
 //         />
 //         {/* <MetricCard
-//           icon={<BoltIcon className="h-6 w-6 text-blue-600" />}
+//           icon={<BoltIcon className="h-6 w-6 text-primary-600" />}
 //           title="Utilization Rate"
 //           value={subscriptionData.utilizationRate}
 //           trend="High usage"
@@ -177,7 +177,7 @@
 //                 </CardTitle>
 //                 <button
 //                   onClick={() => navigate("/dashboard/subscriptions")}
-//                   className="flex items-center text-sm font-medium text-indigo-600"
+//                   className="flex items-center text-sm font-medium text-primary-600"
 //                 >
 //                   View all <ArrowRightIcon className="ml-1 h-4 w-4" />
 //                 </button>
@@ -238,7 +238,7 @@
 //                         <div className="mb-2">
 //                           <div className="h-2 w-24 overflow-hidden rounded-full bg-gray-200">
 //                             <div
-//                               className="h-full bg-gradient-to-r from-blue-500 to-indigo-600"
+//                               className="h-full bg-gradient-to-r from-primary-500 to-primary-600"
 //                               style={{ width: sub.utilization }}
 //                             />
 //                           </div>
@@ -272,7 +272,7 @@
 //                   We're working on detailed analytics to show how you're using
 //                   each subscription.
 //                 </p>
-//                 <div className="mt-4 inline-flex items-center rounded-full bg-blue-50 px-3 py-1 text-xs font-medium text-blue-700">
+//                 <div className="mt-4 inline-flex items-center rounded-full bg-primary-50 px-3 py-1 text-xs font-medium text-primary-700">
 //                   In Development
 //                 </div>
 //               </div>
@@ -310,7 +310,7 @@
 //                         </p>
 //                       </div>
 //                     </div>
-//                     <button className="text-sm font-medium text-indigo-600">
+//                     <button className="text-sm font-medium text-primary-600">
 //                       {rec.action}
 //                     </button>
 //                   </div>
@@ -366,8 +366,8 @@
 //                 className="flex w-full items-center justify-between rounded-lg border border-gray-200 bg-white p-3 hover:bg-gray-50"
 //               >
 //                 <div className="flex items-center gap-3">
-//                   <div className="rounded-lg bg-indigo-100 p-1.5">
-//                     <CreditCardIcon className="h-5 w-5 text-indigo-600" />
+//                   <div className="rounded-lg bg-primary-100 p-1.5">
+//                     <CreditCardIcon className="h-5 w-5 text-primary-600" />
 //                   </div>
 //                   <span className="font-medium text-gray-800">
 //                     Payment Methods
@@ -739,7 +739,7 @@ export default function SubscriptionDashboard() {
               onClick={() => setActiveTab(tab.id as any)}
               className={`px-4 py-2 rounded-lg font-medium transition-colors flex items-center ${
                 activeTab === tab.id
-                  ? "bg-indigo-600 text-white"
+                  ? "bg-primary-600 text-white"
                   : "text-gray-600 hover:bg-gray-100"
               }`}
             >
@@ -764,7 +764,7 @@ export default function SubscriptionDashboard() {
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {/* Total Subscriptions */}
                 <motion.div whileHover={{ y: -5 }}>
-                  <Card className="hover:shadow-lg transition-shadow bg-gradient-to-r from-blue-50 to-indigo-50">
+                  <Card className="hover:shadow-lg transition-shadow bg-gradient-to-r from-primary-50 to-primary-50">
                     <CardHeader className="pb-2">
                       <CardDescription>Total Subscriptions</CardDescription>
                       <CardTitle className="text-4xl">
@@ -802,7 +802,7 @@ export default function SubscriptionDashboard() {
 
                 {/* Family Members */}
                 <motion.div whileHover={{ y: -5 }}>
-                  <Card className="hover:shadow-lg transition-shadow bg-gradient-to-r from-purple-50 to-pink-50">
+                  <Card className="hover:shadow-lg transition-shadow bg-gradient-to-r from-secondary-50 to-pink-50">
                     <CardHeader className="pb-2">
                       <CardDescription>Family Members</CardDescription>
                       <CardTitle className="text-4xl">
@@ -860,7 +860,7 @@ export default function SubscriptionDashboard() {
                             <div
                               className={`absolute top-0 right-0 px-2 py-1 text-xs font-medium ${
                                 sub.type === "family"
-                                  ? "bg-indigo-100 text-indigo-800"
+                                  ? "bg-primary-100 text-primary-800"
                                   : "bg-gray-100 text-gray-800"
                               }`}
                             >
@@ -1057,7 +1057,7 @@ export default function SubscriptionDashboard() {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.4 }}
                 >
-                  <Card className="hover:shadow-lg transition-shadow bg-gradient-to-br from-indigo-50 to-purple-50">
+                  <Card className="hover:shadow-lg transition-shadow bg-gradient-to-br from-primary-50 to-secondary-50">
                     <CardHeader>
                       <CardTitle>Loyalty Rewards</CardTitle>
                       <CardDescription>
@@ -1068,13 +1068,13 @@ export default function SubscriptionDashboard() {
                       <div className="mb-4">
                         <div className="flex justify-between mb-1">
                           <span className="font-medium">Your Points</span>
-                          <span className="font-bold text-indigo-600">
+                          <span className="font-bold text-primary-600">
                             {loyaltyPoints}/{nextReward}
                           </span>
                         </div>
                         <Progress
                           value={(loyaltyPoints / nextReward) * 100}
-                          className="h-2 bg-indigo-100"
+                          className="h-2 bg-primary-100"
                         />
                       </div>
                       <div className="grid grid-cols-3 gap-2 text-center">
@@ -1088,7 +1088,7 @@ export default function SubscriptionDashboard() {
                         </div>
                         <div className="p-2 bg-white rounded-lg border border-gray-200">
                           <div className="text-xs text-gray-500">At 3000</div>
-                          <div className="font-bold text-purple-600">
+                          <div className="font-bold text-secondary-600">
                             Platinum
                           </div>
                         </div>
@@ -1097,7 +1097,7 @@ export default function SubscriptionDashboard() {
                     <CardFooter>
                       <Button
                         variant="outline"
-                        className="w-full border-indigo-200 text-indigo-600"
+                        className="w-full border-primary-200 text-primary-600"
                       >
                         View Rewards
                       </Button>
@@ -1539,11 +1539,11 @@ export default function SubscriptionDashboard() {
                 </CardContent>
               </Card>
 
-              <div className="bg-blue-50 p-4 rounded-lg border border-blue-100">
+              <div className="bg-primary-50 p-4 rounded-lg border border-primary-100">
                 <div className="flex items-start space-x-3">
                   <div className="flex-shrink-0">
                     <svg
-                      className="h-5 w-5 text-blue-500"
+                      className="h-5 w-5 text-primary-500"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -1557,10 +1557,10 @@ export default function SubscriptionDashboard() {
                     </svg>
                   </div>
                   <div>
-                    <h3 className="font-medium text-blue-800">
+                    <h3 className="font-medium text-primary-800">
                       Family Plan Management
                     </h3>
-                    <p className="text-sm text-blue-600 mt-1">
+                    <p className="text-sm text-primary-600 mt-1">
                       Admins can manage billing and members. Members have full
                       access to content but cannot change subscription settings.
                       You can assign
@@ -1574,4 +1574,4 @@ export default function SubscriptionDashboard() {
       </div>
     </div>
   );
-};
+}

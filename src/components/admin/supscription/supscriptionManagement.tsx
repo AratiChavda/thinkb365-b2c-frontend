@@ -1,52 +1,32 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@radix-ui/react-dropdown-menu";
+} from "@/components/ui/dropdown-menu";
+import DataTable from "@/components/table/dataTable";
+import { DataTablePagination } from "@/components/table/dataTablePagination";
+import { useTableData } from "@/hooks/useTableData";
+import GlobalFilter from "@/components/table/globalFilter";
+import { getFormattedDate } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { Icons } from "@/components/icons";
 import { bundleAPI } from "@/lib/api";
+import {
+  CalendarClock,
+  Gift,
+  Lock,
+  PackageCheck,
+  ShieldCheck,
+  Tag,
+  Users,
+} from "lucide-react";
 
 export type BillingPeriod = "daily" | "weekly" | "monthly" | "yearly";
 export type BundleType = "basic" | "standard" | "premium";
-
-type Subscription = {
-  id: number;
-  name: string;
-  description: string;
-  bundle_type: BundleType;
-  pricing: number;
-  billing_period: BillingPeriod;
-  billing_cycle_length: number;
-  trial_period_days: number;
-  is_active: boolean;
-  max_users: number;
-  cancellation_policy: string;
-  is_cancellable: boolean;
-  cancellation_notice_days: number;
-  cancellation_fee: number;
-  lock_in_period_days: number;
-  cancellation_rules: Record<string, any>;
-  offer_id: number | null;
-  products_count: number;
-};
-
-
-const getBundleColor = (bundle: BundleType) => {
-  switch (bundle) {
-    case "basic":
-      return "bg-gray-100 text-gray-800";
-    case "standard":
-      return "bg-blue-100 text-blue-800";
-    case "premium":
-      return "bg-purple-100 text-purple-800";
-  }
-};
 
 const formatBillingCycle = (period: BillingPeriod, length: number): string => {
   const pluralize = (word: string, count: number) =>
@@ -57,14 +37,18 @@ const formatBillingCycle = (period: BillingPeriod, length: number): string => {
 
 const SubscriptionManagement = ({ setIsAdding, setEditingId }: any) => {
   const [viewMode, setViewMode] = useState<"table" | "grid">("table");
-  const [searchTerm, setSearchTerm] = useState("");
-  const [subscriptions, setSubscriptions] = useState<Subscription[]>([]);
-  const [sortConfig, setSortConfig] = useState({
-    key: "name",
-    direction: "asc" as "asc" | "desc",
-  });
+  const [subscriptions, setSubscriptions] = useState<any[]>([]);
+  const {
+    paginatedData,
+    page,
+    setPage,
+    pageCount,
+    sorting,
+    setSorting,
+    globalFilter,
+    setGlobalFilter,
+  } = useTableData({ data: subscriptions, initialPageSize: 10 });
 
- 
   useEffect(() => {
     fetchSubscriptions();
   }, []);
@@ -83,368 +67,288 @@ const SubscriptionManagement = ({ setIsAdding, setEditingId }: any) => {
     setIsAdding(true);
   };
 
-  const filteredAndSortedSubs = subscriptions
-    .filter(
-      (sub) =>
-        sub.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        sub.description.toLowerCase().includes(searchTerm.toLowerCase())
-    )
-    .sort((a, b) => {
-      const aValue = a[sortConfig.key as keyof Subscription];
-      const bValue = b[sortConfig.key as keyof Subscription];
-
-      if (typeof aValue === "string" && typeof bValue === "string") {
-        return sortConfig.direction === "asc"
-          ? aValue.localeCompare(bValue)
-          : bValue.localeCompare(aValue);
-      }
-
-      if (aValue && bValue && aValue < bValue)
-        return sortConfig.direction === "asc" ? -1 : 1;
-      if (aValue && bValue && aValue > bValue)
-        return sortConfig.direction === "asc" ? 1 : -1;
-      return 0;
-    });
-
+  const InfoItem = ({
+    icon,
+    label,
+    children,
+  }: {
+    icon: React.ReactNode;
+    label: string;
+    children: React.ReactNode;
+  }) => (
+    <div className="flex items-start gap-2">
+      <div className="text-gray-500 mt-0.5">{icon}</div>
+      <div>
+        <div className="text-gray-500">{label}</div>
+        <div className="font-medium text-gray-800">{children}</div>
+      </div>
+    </div>
+  );
   return (
-    <div className="max-w-7xl mx-auto p-6 space-y-6">
-      <div className="flex justify-between items-center mb-8">
+    <div className="w-full p-4">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3 }}
-          className="space-y-1"
         >
-          <h1 className="text-3xl font-bold text-gray-800">
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-800">
             Subscription Management
           </h1>
-          <p className="text-gray-500">
+          <p className="text-sm sm:text-base text-gray-500">
             Manage all your subscriptions and product mappings
           </p>
         </motion.div>
+
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
-          className="flex items-center gap-4"
+          className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 w-full sm:w-auto"
         >
-          <Button
-            variant="outline"
-            size="icon"
-            onClick={() => setViewMode(viewMode === "table" ? "grid" : "table")}
-          >
-            {viewMode === "table" ? (
-              <Icons.lGrid className="h-4 w-4" />
-            ) : (
-              <Icons.lList className="h-4 w-4" />
-            )}
-          </Button>
-          <Button
-            onClick={() => {
-              setIsAdding(true);
-              setEditingId(null);
-            }}
-            className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 rounded-full shadow-md"
-          >
-            <Icons.plus className="h-4 w-4 mr-2" />
-            Add Subscription
-          </Button>
+          <GlobalFilter
+            globalFilter={globalFilter}
+            setGlobalFilter={setGlobalFilter}
+          />
+          <div className="flex gap-2">
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={() =>
+                setViewMode(viewMode === "table" ? "grid" : "table")
+              }
+            >
+              {viewMode === "table" ? <Icons.lGrid /> : <Icons.lList />}
+            </Button>
+            <Button
+              onClick={() => {
+                setIsAdding(true);
+                setEditingId(null);
+              }}
+            >
+              <Icons.plus className="mr-2 h-4 w-4" />
+              Add Subscription
+            </Button>
+          </div>
         </motion.div>
       </div>
 
-      <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.3, delay: 0.2 }}
-        className="mb-8"
-      >
-        <div className="relative max-w-md">
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <Icons.search className="h-5 w-5 text-gray-400" />
-          </div>
-          <Input
-            placeholder="Search brand by name or description..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10 pr-4 py-3 rounded-full border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-          />
-          {searchTerm && (
-            <button
-              onClick={() => setSearchTerm("")}
-              className="absolute right-3 top-3"
-            >
-              <Icons.x className="h-5 w-5 text-gray-400" />
-            </button>
-          )}
-        </div>
-      </motion.div>
-
-      {viewMode === "table" ? (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.4 }}
-        >
-          <Card className="rounded-xl overflow-hidden shadow-sm border-0">
-            <CardContent className="p-0">
-              {filteredAndSortedSubs.length ? (
-                <div className="overflow-x-auto">
-                  <table className="w-full divide-y divide-gray-200">
-                    <thead className="bg-gray-50">
-                      <tr>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          <Button
-                            variant="ghost"
-                            onClick={() =>
-                              sortConfig.key === "name" &&
-                              sortConfig.direction === "asc"
-                                ? setSortConfig({
-                                    key: "name",
-                                    direction: "desc",
-                                  })
-                                : setSortConfig({
-                                    key: "name",
-                                    direction: "asc",
-                                  })
-                            }
-                          >
-                            Name
-                            <Icons.sortDesc
-                              className={`h-4 w-4 transition-transform ${
-                                sortConfig.key === "name" &&
-                                sortConfig.direction === "desc"
-                                  ? "rotate-180"
-                                  : ""
-                              }`}
-                            />
-                          </Button>
-                        </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Type
-                        </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Pricing
-                        </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Billing Cycle
-                        </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Products
-                        </th>
-                        <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                          Actions
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody className="bg-white divide-y divide-gray-100">
-                      {filteredAndSortedSubs.map((sub: any) => (
-                        <motion.tr
-                          key={sub.id}
-                          initial={{ opacity: 0 }}
-                          animate={{ opacity: 1 }}
-                          transition={{ duration: 0.3 }}
-                          className="hover:bg-gray-50"
-                        >
-                          <td className="px-6 py-4 whitespace-nowrap font-medium text-gray-900">
-                            {sub.name}
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap">
-                            <span
-                              className={`inline-flex px-2 py-1 rounded-full text-xs font-semibold ${getBundleColor(
-                                sub.bundle_type
-                              )}`}
-                            >
-                              {sub.bundle_type.charAt(0).toUpperCase() +
-                                sub.bundle_type.slice(1)}
-                            </span>
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-gray-900">
-                            <span className="font-bold">${sub.pricing}</span> /{" "}
-                            {formatBillingCycle(
-                              sub.billing_period,
-                              sub.billing_cycle_length
-                            )}
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-gray-500">
-                            {sub.trial_period_days > 0
-                              ? `${sub.trial_period_days} days free trial`
-                              : "No trial"}
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-gray-500">
-                            {sub.products_count} products
-                          </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                            <div className="flex justify-end space-x-2">
-                              <Button
-                                variant="ghost"
-                                size="icon"
-                                onClick={() => startEdit(sub)}
-                                className="hover:bg-gray-100 rounded-full"
-                              >
-                                <Icons.edit className="h-4 w-4 text-gray-600" />
-                              </Button>
-                            </div>
-                          </td>
-                        </motion.tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              ) : (
+      {paginatedData.length ? (
+        viewMode === "table" ? (
+          <DataTable
+            data={paginatedData}
+            columns={[
+              {
+                header: "Name",
+                accessorKey: "name",
+              },
+              {
+                header: "Type",
+                accessorKey: "bundle_type",
+              },
+              {
+                header: "Pricing",
+                accessorKey: "pricing",
+              },
+              {
+                header: "Billing Cycle",
+                accessorKey: "name",
+                cell: ({ row }: any) => {
+                  return (
+                    <span>
+                      {formatBillingCycle(
+                        row.original.billing_period,
+                        row.original.billing_cycle_length
+                      )}
+                    </span>
+                  );
+                },
+              },
+              {
+                header: "Trial Period",
+                accessorKey: "trial_period_days",
+              },
+              {
+                header: "Products",
+                accessorKey: "products_count",
+              },
+              {
+                header: "Created At",
+                accessorKey: "created_at",
+                sortingFn: "datetime",
+                cell: ({ _, row }: any) => {
+                  return getFormattedDate(row.original.created_at);
+                },
+              },
+              {
+                header: "Actions",
+                accessorKey: "actions",
+                enableSorting: false,
+                cell: ({ row }: any) => (
+                  <div className="flex items-center space-x-2">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => startEdit(row.original)}
+                    >
+                      <Icons.edit className="h-4 w-4" />
+                    </Button>
+                  </div>
+                ),
+              },
+            ]}
+            sorting={sorting}
+            onSortingChange={setSorting}
+          ></DataTable>
+        ) : (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.4 }}
+            className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 auto-rows-fr"
+          >
+            <AnimatePresence>
+              {paginatedData.map((item) => (
                 <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 0.4 }}
-                  className="col-span-full"
-                >
-                  <Card className="rounded-xl border-0 shadow-sm">
-                    <CardContent className="p-8 text-center">
-                      <Icons.subscription className="h-12 w-12 text-gray-300 mx-auto mb-4" />
-                      <h3 className="text-lg font-medium text-gray-900 mb-1">
-                        No subscription found
-                      </h3>
-                      <p className="text-gray-500 mb-6">
-                        Try adjusting your search or create a new subscription
-                      </p>
-                      <Button
-                        onClick={() => {
-                          setIsAdding(true);
-                          setEditingId(null);
-                        }}
-                        className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 rounded-full shadow-md"
-                      >
-                        <Icons.plus className="h-4 w-4 mr-2" />
-                        Add Subscription
-                      </Button>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-              )}
-            </CardContent>
-          </Card>
-        </motion.div>
-      ) : (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.4 }}
-          className="grid gap-6 md:grid-cols-2 lg:grid-cols-3"
-        >
-          <AnimatePresence>
-            {filteredAndSortedSubs.length > 0 ? (
-              filteredAndSortedSubs.map((sub: any) => (
-                <motion.div
-                  key={sub.id}
+                  key={item.id}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.3 }}
                 >
-                  <Card className="hover:shadow-lg transition-shadow duration-300 rounded-xl border-0 overflow-hidden group">
-                    <div className="relative bg-gradient-to-r from-indigo-500 to-purple-600 p-4 text-white">
-                      <h3 className="text-xl font-bold">{sub.name}</h3>
-                      <span className="block mt-1 text-sm opacity-90">
-                        {sub.description.substring(0, 50)}...
-                      </span>
-                      {sub.offer_id && (
-                        <span className="absolute top-4 right-4 bg-yellow-400 text-black text-xs font-bold px-2 py-1 rounded">
-                          Offer #{sub.offer_id?.name}
-                        </span>
-                      )}
-                    </div>
-                    <CardContent className="p-6">
-                      <div className="space-y-4">
-                        <div className="flex justify-between">
-                          <span className="text-sm text-gray-500">Type</span>
-                          <span
-                            className={`text-xs font-semibold px-2 py-1 rounded ${getBundleColor(
-                              sub.bundle_type
-                            )}`}
-                          >
-                            {sub.bundle_type.toUpperCase()}
-                          </span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-sm text-gray-500">Price</span>
-                          <span className="font-bold text-lg">
-                            ${sub.pricing}/mo
-                          </span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-sm text-gray-500">
-                            Products
-                          </span>
-                          <span>{sub.products_count}</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-sm text-gray-500">Trial</span>
-                          <span>
-                            {sub.trial_period_days > 0
-                              ? `${sub.trial_period_days} Days`
-                              : "-"}
-                          </span>
-                        </div>
+                  <Card className="h-full relative hover:shadow-xl shadow-lg transition-shadow duration-300 bg-gradient-to-br from-white to-gray-50  rounded-xl border-0">
+                    {item.trial_period_days > 0 && (
+                      <div className="absolute top-0 left-0 bg-yellow-400 text-white text-xs font-bold px-2 py-1 rounded-br-lg z-10">
+                        🎉 {item.trial_period_days}-Day Trial
                       </div>
-                      <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            className="rounded-full"
-                          >
-                            <Icons.moreVertical className="h-4 w-4" />
-                          </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent
-                          align="end"
-                          className="rounded-lg shadow-lg"
+                    )}
+                    <CardContent className="p-4 sm:p-6">
+                      <div className="flex justify-between items-start mb-4">
+                        <div>
+                          <h3 className="text-lg font-semibold text-gray-800">
+                            {item.name}
+                          </h3>
+                          <p className="text-sm text-gray-600">
+                            {item.description}
+                          </p>
+                        </div>
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="rounded-full"
+                            >
+                              <Icons.moreVertical className="h-4 w-4" />
+                            </Button>
+                          </DropdownMenuTrigger>
+                          <DropdownMenuContent className="w-24 mt-2 shadow-xl rounded-xl border border-gray-100">
+                            <DropdownMenuItem
+                              onClick={() => startEdit(item)}
+                              className="gap-2 cursor-pointer"
+                            >
+                              <Icons.edit className="h-4 w-4 mr-2" />
+                              <span>Edit</span>
+                            </DropdownMenuItem>
+                          </DropdownMenuContent>
+                        </DropdownMenu>
+                      </div>
+                      <div className="grid grid-cols-2 sm:grid-cols-2 gap-4 text-sm">
+                        <InfoItem
+                          icon={<Tag className="w-4 h-4" />}
+                          label="Price"
                         >
-                          <DropdownMenuItem
-                            onClick={() => startEdit(sub)}
-                            className="focus:bg-indigo-50"
+                          ₹{item.pricing} / {item.billing_period}
+                        </InfoItem>
+                        <InfoItem
+                          icon={<Users className="w-4 h-4" />}
+                          label="Max Users"
+                        >
+                          {item.max_users}
+                        </InfoItem>
+                        <InfoItem
+                          icon={<PackageCheck className="w-4 h-4" />}
+                          label="Bundle Type"
+                        >
+                          {item.bundle_type}
+                        </InfoItem>
+                        <InfoItem
+                          icon={<Gift className="w-4 h-4" />}
+                          label="Products"
+                        >
+                          {item.products_count}
+                        </InfoItem>
+                        <InfoItem
+                          icon={<CalendarClock className="w-4 h-4" />}
+                          label="Billing Cycle"
+                        >
+                          {item.billing_cycle_length}x {item.billing_period}
+                        </InfoItem>
+                        {item.lock_in_period_days > 0 && (
+                          <InfoItem
+                            icon={<Lock className="w-4 h-4" />}
+                            label="Lock-in"
                           >
-                            <Icons.edit className="h-4 w-4 mr-2" />
-                            Edit
-                          </DropdownMenuItem>
-                        </DropdownMenuContent>
-                      </DropdownMenu>
+                            {item.lock_in_period_days} days
+                          </InfoItem>
+                        )}
+                      </div>
+                      {item.is_cancellable && (
+                        <div className="mt-4 p-3 bg-gray-100 border rounded-lg flex items-start gap-3 text-sm text-gray-700">
+                          <ShieldCheck className="w-5 h-5 mt-1 text-blue-500" />
+                          <div>
+                            <p className="font-medium mb-1">
+                              Cancellation Policy
+                            </p>
+                            <p>{item.cancellation_policy}</p>
+                            <p className="text-xs text-gray-500 mt-1">
+                              Notice: {item.cancellation_notice_days} days •
+                              Fee: ₹{item.cancellation_fee}
+                            </p>
+                          </div>
+                        </div>
+                      )}{" "}
                     </CardContent>
                   </Card>
                 </motion.div>
-              ))
-            ) : (
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.4 }}
-                className="col-span-full"
+              ))}
+            </AnimatePresence>
+          </motion.div>
+        )
+      ) : (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.4 }}
+          className="col-span-full"
+        >
+          <Card className="rounded-xl border-0 shadow-md bg-[radial-gradient(circle_at_bottom_left,_var(--tw-gradient-stops))] from-primary-100/30 via-primary-50/30 to-primary-100/30">
+            <CardContent className="p-8 text-center">
+              <Icons.subscription className="h-12 w-12 text-gray-300 mx-auto mb-4" />
+              <h3 className="text-lg font-medium text-gray-900 mb-1">
+                No subscriptions found
+              </h3>
+              <p className="text-gray-500 mb-6">
+                Try adjusting your search or create a new subscription
+              </p>
+              <Button
+                onClick={() => {
+                  setIsAdding(true);
+                  setEditingId(null);
+                }}
+                className="bg-gradient-to-r from-primary-600 to-primary-600 hover:from-primary-700 hover:to-primary-700 rounded-full shadow-md"
               >
-                <Card className="rounded-xl border-0 shadow-sm">
-                  <CardContent className="p-8 text-center">
-                    <Icons.subscription className="h-12 w-12 text-gray-300 mx-auto mb-4" />
-                    <h3 className="text-lg font-medium text-gray-900 mb-1">
-                      No subscription found
-                    </h3>
-                    <p className="text-gray-500 mb-6">
-                      Try adjusting your search or create a new subscription
-                    </p>
-                    <Button
-                      onClick={() => {
-                        setIsAdding(true);
-                        setEditingId(null);
-                      }}
-                      className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 rounded-full shadow-md"
-                    >
-                      <Icons.plus className="h-4 w-4 mr-2" />
-                      Add Subscription
-                    </Button>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            )}
-          </AnimatePresence>
+                <Icons.plus className="h-4 w-4 mr-2" />
+                Add Subscription
+              </Button>
+            </CardContent>
+          </Card>
         </motion.div>
       )}
+      <DataTablePagination
+        currentPage={page}
+        pageCount={pageCount}
+        onPageChange={setPage}
+      />
     </div>
   );
 };

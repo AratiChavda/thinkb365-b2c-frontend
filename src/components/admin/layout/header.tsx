@@ -72,9 +72,9 @@ export const AdminHeader = () => {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                <Avatar className="size-8 cursor-pointer border-2 border-indigo-100 hover:border-indigo-200 transition-colors">
+                <Avatar className="size-8 cursor-pointer border-2 border-primary-100 hover:border-primary-200 transition-colors">
                   <AvatarImage src="/images/avatar.jpg" />
-                  <AvatarFallback className="bg-indigo-100 text-indigo-600 font-medium">
+                  <AvatarFallback className="bg-primary-100 text-primary-600 font-medium">
                     {userName
                       ?.split(" ")
                       .map((word: string) => word[0].toUpperCase())

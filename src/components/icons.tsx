@@ -5,6 +5,7 @@ import {
   ArrowUpDown,
   BadgeCheck,
   Calendar,
+  Clock,
   DollarSign,
   Folder,
   Gift,
@@ -21,11 +22,13 @@ import {
   Newspaper,
   PackagePlus,
   Pencil,
+  PlayCircle,
   PlusCircle,
   Repeat,
   Search,
   Settings,
   Star,
+  StopCircle,
   TicketPercent,
   Trash,
   TrendingDown,
@@ -53,7 +56,7 @@ const trendingUp = TrendingUp;
 const trendingDown = TrendingDown;
 const userMoney = HandCoins;
 const spinner = Loader;
-const calender = Calendar;
+const calendar = Calendar;
 const sort = ArrowUpDown;
 const sortAsc = ArrowUp;
 const sortDesc = ArrowDown;
@@ -69,6 +72,9 @@ const x = X;
 const newspaper = Newspaper;
 const monitor = Monitor;
 const layers = Layers;
+const clock = Clock;
+const playCircle = PlayCircle;
+const stopCircle = StopCircle;
 export const Icons = {
   dashboard,
   product,
@@ -88,7 +94,7 @@ export const Icons = {
   trendingDown,
   userMoney,
   spinner,
-  calender,
+  calendar,
   sort,
   sortAsc,
   sortDesc,
@@ -104,4 +110,7 @@ export const Icons = {
   newspaper,
   monitor,
   layers,
+  clock,
+  playCircle,
+  stopCircle,
 };
