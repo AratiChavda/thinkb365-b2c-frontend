@@ -188,7 +188,7 @@ export default function BillingPage() {
                   <TableCell>
                     <Badge
                       variant={
-                        payment.status === "SUCCESS" ? "default" : "destructive"
+                        payment.status === "SUCCESS" ? "success" : "destructive"
                       }
                     >
                       {payment.status}

@@ -431,7 +431,7 @@ const SubscriptionForm = ({ products, offers, editingId, onCancel }: any) => {
                         >
                           <FormControl>
                             <SelectTrigger>
-                              <SelectValue placeholder="Select billing period" />
+                              <SelectValue placeholder="Select offer" />
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>

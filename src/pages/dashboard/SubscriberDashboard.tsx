@@ -492,6 +492,7 @@ import {
   CreditCard,
   Settings,
 } from "lucide-react";
+import BillingPage from "./billingPage";
 
 type Subscription = {
   id: string;
@@ -1570,6 +1571,8 @@ export default function SubscriptionDashboard() {
               </div>
             </motion.div>
           )}
+
+          {activeTab === "billing" && <BillingPage />}
         </AnimatePresence>
       </div>
     </div>

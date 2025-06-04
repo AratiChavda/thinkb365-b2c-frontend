@@ -35,7 +35,7 @@ export default function AppRoutes() {
       case "household_subscriber":
         return <HouseHoldLayout />;
       default:
-        return <div>Unauthorized</div>;
+        return <div></div>;
     }
   };
 
@@ -75,7 +75,7 @@ export default function AppRoutes() {
             <Route path="payment-methods" element={<PaymentMethodsPage />} />
             <Route path="add-ons" element={<AddOnPage />} />
             <Route path="promotions" element={<PromoCodePage />} />
-            <Route path="*" element={<div>404 Not Found</div>} />
+            <Route path="*" element={<div></div>} />
           </>
         )}
 
@@ -85,11 +85,11 @@ export default function AppRoutes() {
             <Route path="subscriptions" element={<SubscriptionPage />} />
             <Route path="billing" element={<BillingPage />} />
             <Route path="payment-methods" element={<PaymentMethodsPage />} />
-            <Route path="*" element={<div>404 Not Found</div>} />
+            <Route path="*" element={<div></div>} />
           </>
         )}
       </Route>
-      <Route path="*" element={<div>404 Not Found</div>} />
+      <Route path="*" element={<div></div>} />
     </Routes>
   );
 }

@@ -7,7 +7,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { motion } from "framer-motion";
-import { User, Bookmark, LogOut, Home, BookOpen } from "lucide-react";
+import { User, Bookmark, LogOut, Home } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { logout } from "@/store/slices/authSlice";
@@ -33,16 +33,20 @@ export const HouseHoldHeader = () => {
           onClick={() => navigate("/")}
         >
           <motion.div
-            whileHover={{ rotate: 15 }}
+            whileHover={{ scale: 1.05 }}
             transition={{ type: "spring", stiffness: 300 }}
           >
-            <BookOpen className="h-6 w-6 text-primary-600 group-hover:text-primary-700 transition-colors" />
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/5/55/News_Corp_logo_2013.svg"
+              className="h-8 mt-2 w-full"
+            />
+            {/* <BookOpen className="h-6 w-6 text-primary-600 group-hover:text-primary-700 transition-colors" /> */}
           </motion.div>
           <motion.span
             className="text-xl font-bold bg-gradient-to-r from-primary-600 to-secondary-600 bg-clip-text text-transparent"
             whileHover={{ scale: 1.05 }}
           >
-            NewsCorp - FSS
+            - FSS
           </motion.span>
         </div>
 
@@ -52,7 +56,7 @@ export const HouseHoldHeader = () => {
               <Avatar className="cursor-pointer border-2 border-primary-100 hover:border-primary-200 transition-colors">
                 <AvatarImage src="/images/avatar.jpg" />
                 <AvatarFallback className="bg-primary-100 text-primary-600 font-medium">
-                  AC
+                  EJ
                 </AvatarFallback>
               </Avatar>
             </motion.div>
