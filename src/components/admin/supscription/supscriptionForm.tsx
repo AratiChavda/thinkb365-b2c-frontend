@@ -59,8 +59,8 @@ const SubscriptionFormSchema = z.object({
         name: z.string(),
         quantity: z.number().min(1, "Quantity must be at least 1"),
       })
-    )
-    .min(1, "At least one product must be selected"),
+    ).optional(),
+    // .min(1, "At least one product must be selected"),
 
   isSubmitting: z.boolean().optional(),
 });
@@ -153,7 +153,7 @@ const SubscriptionForm = ({ products, offers, editingId, onCancel }: any) => {
           products: bundleProducts,
         });
 
-        setSelectedProducts(bundleProducts);
+        // setSelectedProducts(bundleProducts);
       }
     } catch (error) {
       console.error("Error fetching bundle data:", error);
@@ -179,7 +179,6 @@ const SubscriptionForm = ({ products, offers, editingId, onCancel }: any) => {
     if (!product) return;
 
     const isSelected = selectedProducts.some((p) => p.id === productId);
-
     if (isSelected) {
       const updated = selectedProducts.filter((p) => p.id !== productId);
       setSelectedProducts(updated);
@@ -427,7 +426,7 @@ const SubscriptionForm = ({ products, offers, editingId, onCancel }: any) => {
                         <FormLabel>Offer</FormLabel>
                         <Select
                           onValueChange={field.onChange}
-                          value={field.value}
+                          value={field.value?.toString()}
                         >
                           <FormControl>
                             <SelectTrigger>
@@ -436,7 +435,10 @@ const SubscriptionForm = ({ products, offers, editingId, onCancel }: any) => {
                           </FormControl>
                           <SelectContent>
                             {offers.map((item: any) => (
-                              <SelectItem key={item?.id} value={item?.id}>
+                              <SelectItem
+                                key={item?.id}
+                                value={item?.id?.toString()}
+                              >
                                 {item?.name}
                               </SelectItem>
                             ))}
@@ -589,7 +591,7 @@ const SubscriptionForm = ({ products, offers, editingId, onCancel }: any) => {
                   <Button
                     type="button"
                     onClick={() => setActiveTab("products")}
-                    disabled={!form.formState.isValid}
+                    // disabled={!form.formState.isValidating}
                   >
                     Next: Product Mapping
                   </Button>
@@ -608,11 +610,10 @@ const SubscriptionForm = ({ products, offers, editingId, onCancel }: any) => {
                       <div
                         key={product.id}
                         className={`border rounded-lg p-4 cursor-pointer transition-colors ${
-                          selectedProducts.some((p) => p.id === product.id)
+                          selectedProducts.some((p) => p.id == product.id)
                             ? "border-primary bg-primary/10"
                             : "hover:bg-muted/50"
                         }`}
-                        onClick={() => handleProductSelect(product.id)}
                       >
                         <div className="flex items-center justify-between">
                           <div>
@@ -625,10 +626,8 @@ const SubscriptionForm = ({ products, offers, editingId, onCancel }: any) => {
                             checked={selectedProducts.some(
                               (p) => p.id === product.id
                             )}
-                            onCheckedChange={() =>
-                              handleProductSelect(product.id)
-                            }
                             className="ml-2"
+                            onClick={() => handleProductSelect(product?.id)}
                           />
                         </div>
 
